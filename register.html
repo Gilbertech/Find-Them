@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Register to FindThem and start your journey." />
+  <meta name ="author" content="Gilbert Ngaruiya" />
+  <title>Register - FindThem</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .auth-header h2 {
+      color: #2d3748;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .auth-header p {
+      color: #718096;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .auth-form {
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #a0aec0;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .auth-footer {
+      text-align: center;
+      padding-top: 25px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .auth-footer p {
+      color: #718096;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .auth-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .landing-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #718096 !important;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .landing-link:hover {
+      color: #667eea !important;
+    }
+
+    @media (max-width: 640px) {
+      .auth-container {
+        padding: 30px 25px;
+        margin: 20px;
+      }
+
+      .auth-header h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-header">
+      <h2>Join FindThem</h2>
+      <p>Create your account to start helping your community</p>
+    </div>
+
+    <form class="auth-form" onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <input type="text" placeholder="First Name" required />
+      </div>
+      <div class="form-group">
+        <input type="text" placeholder="Last Name" required />
+      </div>
+      <div class="form-group">
+        <input type="email" placeholder="Email Address" required />
+      </div>
+      <div class="form-group">
+        <input type="tel" placeholder="Phone Number" required />
+      </div>
+      <div class="form-group">
+        <select required>
+          <option value="">Select County</option>
+          <option value="baringo">Baringo</option>
+          <option value="bomet">Bomet</option>
+          <option value="bungoma">Bungoma</option>
+          <option value="busia">Busia</option>
+          <option value="elgeyo-marakwet">Elgeyo-Marakwet</option>
+          <option value="embu">Embu</option>
+          <option value="garissa">Garissa</option>
+          <option value="homa-bay">Homa Bay</option>
+          <option value="isiolo">Isiolo</option>
+          <option value="kajiado">Kajiado</option>
+          <option value="kakamega">Kakamega</option>
+          <option value="kericho">Kericho</option>
+          <option value="kiambu">Kiambu</option>
+          <option value="kilifi">Kilifi</option>
+          <option value="kirinyaga">Kirinyaga</option>
+          <option value="kisii">Kisii</option>
+          <option value="kisumu">Kisumu</option>
+          <option value="kitui">Kitui</option>
+          <option value="kwale">Kwale</option>
+          <option value="laikipia">Laikipia</option>
+          <option value="lamu">Lamu</option>
+          <option value="machakos">Machakos</option>
+          <option value="makueni">Makueni</option>
+          <option value="mandera">Mandera</option>
+          <option value="meru">Meru</option>
+          <option value="migori">Migori</option>
+          <option value="marsabit">Marsabit</option>
+          <option value="mombasa">Mombasa</option>
+          <option value="murang'a">Murang'a</option>
+          <option value="nairobi">Nairobi</option>
+          <option value="nakuru">Nakuru</option>
+          <option value="nandi">Nandi</option>
+          <option value="narok">Narok</option>
+          <option value="nyamira">Nyamira</option>
+          <option value="nyandarua">Nyandarua</option>
+          <option value="nyeri">Nyeri</option>
+          <option value="samburu">Samburu</option>
+          <option value="siaya">Siaya</option>
+          <option value="taita taveta">Taita Taveta</option>
+          <option value="tana river">Tana River</option>
+          <option value="tharaka nithi">Tharaka Nithi</option>
+          <option value="trans nzoia">Trans Nzoia</option>
+          <option value="turkana">Turkana</option>
+          <option value="uasin gishu">Uasin Gishu</option>
+          <option value="vihiga">Vihiga</option>
+          <option value="wajir">Wajir</option>
+          <option value="west pokot">West Pokot</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input type="password" placeholder="Password" required />
+      </div>
+      <div class="form-group">
+        <input type="password" placeholder="Confirm Password" required />
+      </div>
+      <button type="submit" class="btn-primary">Create Account</button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Already have an account? <a href="login.html">Sign in</a></p>
+      <p><a href="index.html" class="landing-link"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+    </div>
+  </div>
+
+  <script>
+    function handleRegister(event) {
+      event.preventDefault();
+      const form = event.target;
+      const firstName = form.querySelector('input[placeholder="First Name"]').value;
+      const lastName = form.querySelector('input[placeholder="Last Name"]').value;
+      const email = form.querySelector('input[type="email"]').value;
+
+      localStorage.setItem('currentUser', JSON.stringify({
+        id: Date.now(),
+        name: `${firstName} ${lastName}`,
+        email: email,
+        role: 'user',
+        avatar: "/placeholder.svg?height=40&width=40"
+      }));
+
+      alert("Account created successfully! Redirecting to dashboard...");
+      window.location.href = "index.html#dashboard";
+    }
+  </script>
+</body>
+</html>

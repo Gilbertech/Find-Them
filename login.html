@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FindThem</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h2 {
+            color: #2d3748;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: #718096;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .demo-credentials {
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .demo-credentials h4 {
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .demo-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .demo-user {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .demo-user:hover {
+            background: #edf2f7;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .demo-user strong {
+            color: #2d3748;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .demo-user span {
+            color: #718096;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .auth-form {
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #a0aec0;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .auth-footer {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .auth-footer p {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .auth-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .landing-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #718096 !important;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .landing-link:hover {
+            color: #667eea !important;
+        }
+
+        /* Success animation for demo credentials */
+        .success-fill {
+            background: #e8f5e8 !important;
+            border-color: #48bb78 !important;
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .auth-container {
+                padding: 30px 25px;
+                margin: 20px;
+            }
+
+            .auth-header h2 {
+                font-size: 24px;
+            }
+
+            .demo-options {
+                gap: 6px;
+            }
+
+            .demo-user {
+                padding: 10px 12px;
+            }
+        }
+
+        /* Loading state */
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Welcome Back</h2>
+            <p>Sign in to continue helping find missing persons</p>
+        </div>
+        
+        <div class="demo-credentials">
+            <h4>Demo Login Credentials</h4>
+            <div class="demo-options">
+                <div class="demo-user" onclick="fillDemoCredentials('admin')">
+                    <strong><i class="fas fa-user-shield"></i> Admin User</strong>
+                    <span>admin@findthem.com / admin123</span>
+                </div>
+                <div class="demo-user" onclick="fillDemoCredentials('user')">
+                    <strong><i class="fas fa-user"></i> Regular User</strong>
+                    <span>user@findthem.com / user123</span>
+                </div>
+                <div class="demo-user" onclick="fillDemoCredentials('police')">
+                    <strong><i class="fas fa-badge"></i> Police Officer</strong>
+                    <span>police@findthem.com / police123</span>
+                </div>
+            </div>
+        </div>
+        
+        <form class="auth-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email address" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+            <div class="auth-links">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="register.html">Sign up</a></p>
+            <p><a href="index.html" class="landing-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a></p>
+        </div>
+    </div>
+
+    <script>
+        function fillDemoCredentials(userType) {
+            const emailInput = document.querySelector('input[name="email"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+
+            const credentials = {
+                admin: { email: "admin@findthem.com", password: "admin123" },
+                user: { email: "user@findthem.com", password: "user123" },
+                police: { email: "police@findthem.com", password: "police123" },
+            };
+
+            if (emailInput && passwordInput && credentials[userType]) {
+                emailInput.value = credentials[userType].email;
+                passwordInput.value = credentials[userType].password;
+
+                // Add success animation
+                emailInput.classList.add('success-fill');
+                passwordInput.classList.add('success-fill');
+
+                setTimeout(() => {
+                    emailInput.classList.remove('success-fill');
+                    passwordInput.classList.remove('success-fill');
+                }, 1500);
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const email = formData.get("email");
+            const password = formData.get("password");
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+
+            // Add loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+            const validUsers = {
+                "admin@findthem.com": { password: "admin123", role: "admin", name: "Admin User" },
+                "user@findthem.com": { password: "user123", role: "user", name: "John Doe" },
+                "police@findthem.com": { password: "police123", role: "police", name: "Officer Smith" },
+            };
+
+            const user = validUsers[email];
+
+            // Simulate network delay
+            setTimeout(() => {
+                if (!user || user.password !== password) {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                    
+                    alert("Invalid email or password. Please try the demo credentials.");
+                    return;
+                }
+
+                // Store user data (note: in a real app, avoid localStorage for sensitive data)
+                const userData = {
+                    id: Date.now(),
+                    name: user.name,
+                    email: email,
+                    role: user.role,
+                    avatar: "/placeholder.svg?height=40&width=40",
+                };
+
+                // In the actual implementation, you would store this securely
+                // For demo purposes only:
+                if (typeof(Storage) !== "undefined") {
+                    sessionStorage.setItem('currentUser', JSON.stringify(userData));
+                }
+
+                // Redirect to main dashboard
+                window.location.href = "index.html#dashboard";
+            }, 1000);
+        }
+
+        // Add keyboard shortcut for demo (Alt + 1, 2, 3)
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey) {
+                switch(e.key) {
+                    case '1':
+                        fillDemoCredentials('admin');
+                        break;
+                    case '2':
+                        fillDemoCredentials('user');
+                        break;
+                    case '3':
+                        fillDemoCredentials('police');
+                        break;
+                }
+            }
+        });
+
+        function fillDemoCredentials(userType) {
+            const emailInput = document.querySelector('input[name="email"]')
+            const passwordInput = document.querySelector('input[name="password"]')
+
+            const credentials = {
+                admin: { email: "admin@findthem.com", password: "admin123" },
+                user: { email: "user@findthem.com", password: "user123" },
+                police: { email: "police@findthem.com", password: "police123" },
+            }
+
+            if (emailInput && passwordInput && credentials[userType]) {
+                emailInput.value = credentials[userType].email
+                passwordInput.value = credentials[userType].password
+
+                emailInput.style.background = "#e8f5e8"
+                passwordInput.style.background = "#e8f5e8"
+
+                setTimeout(() => {
+                    emailInput.style.background = ""
+                    passwordInput.style.background = ""
+                }, 1000)
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault()
+            const formData = new FormData(event.target)
+            const email = formData.get("email")
+            const password = formData.get("password")
+
+            const validUsers = {
+                "admin@findthem.com": { password: "admin123", role: "admin", name: "Admin User" },
+                "user@findthem.com": { password: "user123", role: "user", name: "Brian Kariuki" },
+                "police@findthem.com": { password: "police123", role: "police", name: "Officer Gilbert" },
+            }
+
+            const user = validUsers[email]
+
+            if (!user || user.password !== password) {
+                alert("Invalid email or password. Please try the demo credentials.")
+                return
+            }
+
+            // Store user data in localStorage
+            localStorage.setItem('currentUser', JSON.stringify({
+                id: Date.now(),
+                name: user.name,
+                email: email,
+                role: user.role,
+                avatar: "/placeholder.svg?height=40&width=40",
+            }))
+
+            // Redirect to main dashboard
+            window.location.href = "index.html#dashboard"
+        }
+    </script>
+</body>
+</html>
