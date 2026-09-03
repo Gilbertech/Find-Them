@@ -1,276 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Register to FindThem and start your journey." />
-  <meta name ="author" content="Gilbert Ngaruiya" />
-  <title>Register - FindThem</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <div id="landing-page" class="page">
+        <div class="hero-container">
+            <div class="hero-background">
+                <div class="mesh-gradient"></div>
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+            </div>
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+            <header class="landing-header">
+                <nav class="navbar">
+                    <div class="nav-brand">
+                        <div class="brand-icon"><i class="fas fa-search-location"></i></div>
+                        <span class="brand-text">FindMe</span>
+                    </div>
+                    <div class="nav-actions">
+                        <a href="login.html" class="btn-secondary nav-btn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="register.html" class="btn-primary nav-btn glow-btn">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a>
+                    </div>
+                </nav>
+            </header>
 
-    .auth-container {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      width: 100%;
-      max-width: 480px;
-      position: relative;
-      overflow: hidden;
-    }
+            <main class="hero-section">
+                <div class="hero-content">
+                    <div class="trust-badge animate-slide-up">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Kenya's Most Trusted Missing Persons Network</span>
+                    </div>
+                    
+                    <h1 class="hero-title animate-slide-up delay-1">
+                        Bringing Lost Loved Ones <br>
+                        <span class="title-accent">Back Home</span>
+                    </h1>
 
-    .auth-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-    }
+                    <p class="hero-description animate-slide-up delay-2">
+                        A secure, community-driven platform dedicated to reuniting Kenyan families. 
+                        Report a missing person, share instantly, and let the community help bring them home.
+                    </p>
 
-    .auth-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+                    <div class="hero-stats animate-slide-up delay-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <span class="stat-number" id="stat-members">—</span>
+                            <span class="stat-label">Registered Members</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <span class="stat-number" id="stat-found">—</span>
+                            <span class="stat-label">People Found</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-search"></i></div>
+                            <span class="stat-number" id="stat-active">—</span>
+                            <span class="stat-label">Active Reports</span>
+                        </div>
+                    </div>
 
-    .auth-header h2 {
-      color: #2d3748;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+                    <div class="hero-actions animate-slide-up delay-3">
+                        <a href="register.html" class="btn-urgent btn-large pulse-btn">
+                            <i class="fas fa-plus-circle"></i> Report Missing Person
+                        </a>
+                        <a href="#how-it-works" class="btn-secondary btn-large">
+                            <i class="fas fa-play-circle"></i> How It Works
+                        </a>
+                    </div>
+                </div>
 
-    .auth-header p {
-      color: #718096;
-      font-size: 16px;
-      line-height: 1.5;
-    }
+                <div class="hero-visual animate-slide-left">
+                    <div class="hero-image-container">
+                        <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=1000" alt="Community helping" class="hero-image">
+                        <div class="floating-cards">
+                            <div class="floating-card card-1">
+                                <i class="fas fa-map-marker-alt"></i><span>Real-time Location</span>
+                            </div>
+                            <div class="floating-card card-2">
+                                <i class="fas fa-users"></i><span>Community Network</span>
+                            </div>
+                            <div class="floating-card card-3">
+                                <i class="fas fa-shield-alt"></i><span>Verified Reports</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Trust Bar -->
+            <div class="trust-bar">
+                <div class="container">
+                    <div class="trust-items">
+                        <div class="trust-item"><i class="fas fa-lock"></i> Secure & Private</div>
+                        <div class="trust-item"><i class="fas fa-bolt"></i> Instant Community Alerts</div>
+                        <div class="trust-item"><i class="fas fa-check-double"></i> Admin Verified</div>
+                        <div class="trust-item"><i class="fas fa-globe-africa"></i> Kenya-Wide Coverage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    .auth-form {
-      margin-bottom: 25px;
-    }
+        <section class="features-section" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Simple & Effective</span>
+                    <h2 class="section-title">How FindMe Works</h2>
+                    <p class="section-subtitle">Four simple steps to connect families with the power of the community</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3>1. Create an Account</h3>
+                        <p>Sign up in minutes with your name, phone number, and county to join the network.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>2. Post Missing Person</h3>
+                        <p>Upload a clear photo and details. A small M-Pesa fee ensures all reports are genuine.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h3>3. Community Search</h3>
+                        <p>Members instantly share the report across their networks and submit secure tips.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>4. Verified Resolution</h3>
+                        <p>Admins review and approve every "found" update to maintain platform trust and safety.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+        <section class="success-stories">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Real Impact</span>
+                    <h2 class="section-title">Recently Reunited</h2>
+                    <p class="section-subtitle">Real cases resolved through the power of our community</p>
+                </div>
+                <div class="stories-carousel" id="found-stories">
+                    <p style="text-align:center;color:var(--text-secondary);width:100%;">No testimonials published yet.</p>
+                </div>
+            </div>
+        </section>
 
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      background: #fafafa;
-    }
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <i class="fas fa-hands-helping" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.9;"></i>
+                    <h2>Ready to Make a Difference?</h2>
+                    <p>Join thousands of Kenyans helping reunite families across the country. Every share counts.</p>
+                    <div class="cta-actions">
+                        <a href="register.html" class="btn-primary btn-large glow-btn">
+                            <i class="fas fa-rocket"></i> Start Helping Today
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #667eea;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .form-group input::placeholder {
-      color: #a0aec0;
-    }
-
-    .btn-primary {
-      width: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .auth-footer {
-      text-align: center;
-      padding-top: 25px;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .auth-footer p {
-      color: #718096;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .auth-footer a {
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .auth-footer a:hover {
-      text-decoration: underline;
-    }
-
-    .landing-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #718096 !important;
-      font-size: 13px;
-      transition: color 0.2s ease;
-    }
-
-    .landing-link:hover {
-      color: #667eea !important;
-    }
-
-    @media (max-width: 640px) {
-      .auth-container {
-        padding: 30px 25px;
-        margin: 20px;
-      }
-
-      .auth-header h2 {
-        font-size: 24px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="auth-container">
-    <div class="auth-header">
-      <h2>Join FindThem</h2>
-      <p>Create your account to start helping your community</p>
+        <footer class="landing-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="nav-brand">
+                            <div class="brand-icon"><i class="fas fa-search-location"></i></div>
+                            <span class="brand-text">FindMe</span>
+                        </div>
+                        <p>Reuniting families across Kenya through the power of community and technology.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4>Platform</h4>
+                            <a href="#" onclick="showAbout()">About Us</a>
+                            <a href="#" onclick="showContactInfo()">Contact Us</a>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Support</h4>
+                            <a href="#" onclick="showHelpSupport()">Help Center</a>
+                            <a href="#" onclick="showContactInfo()">Emergency Contacts</a>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Legal</h4>
+                            <a href="#" onclick="showTerms()">Terms of Service</a>
+                            <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 FindMe. All rights reserved. Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for Kenya</p>
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <form class="auth-form" onsubmit="handleRegister(event)">
-      <div class="form-group">
-        <input type="text" placeholder="First Name" required />
-      </div>
-      <div class="form-group">
-        <input type="text" placeholder="Last Name" required />
-      </div>
-      <div class="form-group">
-        <input type="email" placeholder="Email Address" required />
-      </div>
-      <div class="form-group">
-        <input type="tel" placeholder="Phone Number" required />
-      </div>
-      <div class="form-group">
-        <select required>
-          <option value="">Select County</option>
-          <option value="baringo">Baringo</option>
-          <option value="bomet">Bomet</option>
-          <option value="bungoma">Bungoma</option>
-          <option value="busia">Busia</option>
-          <option value="elgeyo-marakwet">Elgeyo-Marakwet</option>
-          <option value="embu">Embu</option>
-          <option value="garissa">Garissa</option>
-          <option value="homa-bay">Homa Bay</option>
-          <option value="isiolo">Isiolo</option>
-          <option value="kajiado">Kajiado</option>
-          <option value="kakamega">Kakamega</option>
-          <option value="kericho">Kericho</option>
-          <option value="kiambu">Kiambu</option>
-          <option value="kilifi">Kilifi</option>
-          <option value="kirinyaga">Kirinyaga</option>
-          <option value="kisii">Kisii</option>
-          <option value="kisumu">Kisumu</option>
-          <option value="kitui">Kitui</option>
-          <option value="kwale">Kwale</option>
-          <option value="laikipia">Laikipia</option>
-          <option value="lamu">Lamu</option>
-          <option value="machakos">Machakos</option>
-          <option value="makueni">Makueni</option>
-          <option value="mandera">Mandera</option>
-          <option value="meru">Meru</option>
-          <option value="migori">Migori</option>
-          <option value="marsabit">Marsabit</option>
-          <option value="mombasa">Mombasa</option>
-          <option value="murang'a">Murang'a</option>
-          <option value="nairobi">Nairobi</option>
-          <option value="nakuru">Nakuru</option>
-          <option value="nandi">Nandi</option>
-          <option value="narok">Narok</option>
-          <option value="nyamira">Nyamira</option>
-          <option value="nyandarua">Nyandarua</option>
-          <option value="nyeri">Nyeri</option>
-          <option value="samburu">Samburu</option>
-          <option value="siaya">Siaya</option>
-          <option value="taita taveta">Taita Taveta</option>
-          <option value="tana river">Tana River</option>
-          <option value="tharaka nithi">Tharaka Nithi</option>
-          <option value="trans nzoia">Trans Nzoia</option>
-          <option value="turkana">Turkana</option>
-          <option value="uasin gishu">Uasin Gishu</option>
-          <option value="vihiga">Vihiga</option>
-          <option value="wajir">Wajir</option>
-          <option value="west pokot">West Pokot</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <input type="password" placeholder="Password" required />
-      </div>
-      <div class="form-group">
-        <input type="password" placeholder="Confirm Password" required />
-      </div>
-      <button type="submit" class="btn-primary">Create Account</button>
-    </form>
-
-    <div class="auth-footer">
-      <p>Already have an account? <a href="login.html">Sign in</a></p>
-      <p><a href="index.html" class="landing-link"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
-    </div>
-  </div>
-
-  <script>
-    function handleRegister(event) {
-      event.preventDefault();
-      const form = event.target;
-      const firstName = form.querySelector('input[placeholder="First Name"]').value;
-      const lastName = form.querySelector('input[placeholder="Last Name"]').value;
-      const email = form.querySelector('input[type="email"]').value;
-
-      localStorage.setItem('currentUser', JSON.stringify({
-        id: Date.now(),
-        name: `${firstName} ${lastName}`,
-        email: email,
-        role: 'user',
-        avatar: "/placeholder.svg?height=40&width=40"
-      }));
-
-      alert("Account created successfully! Redirecting to dashboard...");
-      window.location.href = "index.html#dashboard";
-    }
-  </script>
-</body>
-</html>

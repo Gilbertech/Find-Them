@@ -3,43 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg[...]">
-
-    <title > FindMe - Reuniting Families</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>FindMe - Reuniting Families</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <!-- Landing Page -->
-    <div id="landing-page" class="page active">
-        <!-- Interactive Hero Section -->
+        <div id="landing-page" class="page">
         <div class="hero-container">
             <div class="hero-background">
+                <div class="mesh-gradient"></div>
                 <div class="floating-shapes">
                     <div class="shape shape-1"></div>
                     <div class="shape shape-2"></div>
                     <div class="shape shape-3"></div>
-                    <div class="shape shape-4"></div>
                 </div>
             </div>
-            
+
             <header class="landing-header">
                 <nav class="navbar">
-                    <div class="nav-brand" onclick="animateLogo()">
-                        <div class="brand-icon">
-                            <i class="fas fa-search-location"></i>
-                        </div>
+                    <div class="nav-brand">
+                        <div class="brand-icon"><i class="fas fa-search-location"></i></div>
                         <span class="brand-text">FindMe</span>
                     </div>
                     <div class="nav-actions">
                         <a href="login.html" class="btn-secondary nav-btn">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login
+                            <i class="fas fa-sign-in-alt"></i> Login
                         </a>
-                        <a href="register.html" class="btn-primary nav-btn">
-                            <i class="fas fa-user-plus"></i>
-                            Sign Up
+                        <a href="register.html" class="btn-primary nav-btn glow-btn">
+                            <i class="fas fa-user-plus"></i> Sign Up
                         </a>
                     </div>
                 </nav>
@@ -47,619 +40,290 @@
 
             <main class="hero-section">
                 <div class="hero-content">
-                    
-                    
-                    <div class="hero-brand">
-                        <h1 class="hero-title animate-slide-up">
-                            
-                            <span class="title-accent">FINDME</span>
-                        </h1>
-                        <p class="hero-tagline animate-slide-up delay-1">Bringing Lost Loved Ones Back Home</p>
+                    <div class="trust-badge animate-slide-up">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Kenya's Most Trusted Missing Persons Network</span>
                     </div>
+                    
+                    <h1 class="hero-title animate-slide-up delay-1">
+                        Bringing Lost Loved Ones <br>
+                        <span class="title-accent">Back Home</span>
+                    </h1>
 
                     <p class="hero-description animate-slide-up delay-2">
-                        Join Kenya's most trusted community-driven platform dedicated to reuniting families. 
-                        With advanced search tools, real-time alerts, and nationwide community support.
+                        A secure, community-driven platform dedicated to reuniting Kenyan families. 
+                        Report a missing person, share instantly, and let the community help bring them home.
                     </p>
 
                     <div class="hero-stats animate-slide-up delay-3">
-                        <div class="stat-card" onclick="animateStatCard(this)">
-                            <div class="stat-icon">👥</div>
-                            <span class="stat-number" data-target="15000">0</span>
-                            <span class="stat-label">Active Members</span>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <span class="stat-number" id="stat-members">—</span>
+                            <span class="stat-label">Registered Members</span>
                         </div>
-                        <div class="stat-card" onclick="animateStatCard(this)">
-                            <div class="stat-icon">✅</div>
-                            <span class="stat-number" data-target="2847">0</span>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <span class="stat-number" id="stat-found">—</span>
                             <span class="stat-label">People Found</span>
                         </div>
-                        <div class="stat-card" onclick="animateStatCard(this)">
-                            <div class="stat-icon">🏘️</div>
-                            <span class="stat-number" data-target="500">0</span>
-                            <span class="stat-label">Local Groups</span>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-search"></i></div>
+                            <span class="stat-number" id="stat-active">—</span>
+                            <span class="stat-label">Active Reports</span>
                         </div>
                     </div>
-                    
-                    <div class="hero-actions">
-                            <button class="btn-urgent btn-large pulse-animation" onclick="showPostModal()">
-                                <i class="fas fa-plus-circle"></i>
-                                Report Missing Person
-                            </button>
-                            <button class="btn-primary btn-large" onclick="enterDashboard()">
-                                <i class="fas fa-tachometer-alt"></i>
-                                Enter demo platform
-                            </button>
-                            <a href="register.html" class="btn-secondary btn-large">
-                                <i class="fas fa-rocket"></i>
-                                Get Started Free
-                            </a>
-                        </div>
 
-
-                  
+                    <div class="hero-actions animate-slide-up delay-3">
+                        <a href="register.html" class="btn-urgent btn-large pulse-btn">
+                            <i class="fas fa-plus-circle"></i> Report Missing Person
+                        </a>
+                        <a href="#how-it-works" class="btn-secondary btn-large">
+                            <i class="fas fa-play-circle"></i> How It Works
+                        </a>
+                    </div>
                 </div>
 
                 <div class="hero-visual animate-slide-left">
                     <div class="hero-image-container">
-                        <img src="https://img77.uenicdn.com/image/upload/v1741106038/business/3d58175d-cf48-454e-ba16-9fcbc58a389a.jpg" alt="Families reuniting" class="hero-image">
-                        <img src="https://bunny-wp-pullzone-2v7xwnunut.b-cdn.net/wp-content/uploads/2024/06/family-reunion_closeup-1190x500.png" alt="Families reuniting" class="hero-image">
+                        <img src="https://img77.uenicdn.com/image/upload/v1741106038/business/3d58175d-cf48-454e-ba16-9fcbc58a389a.jpg" alt="Community helping" class="hero-image">
                         <div class="floating-cards">
-                            <div class="floating-card card-1" onclick="animateFloatingCard(this)">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Real-time Location</span>
+                            <div class="floating-card card-1">
+                                <i class="fas fa-map-marker-alt"></i><span>Real-time Location</span>
                             </div>
-                            <div class="floating-card card-2" onclick="animateFloatingCard(this)">
-                                <i class="fas fa-users"></i>
-                                <span>Community Network</span>
+                            <div class="floating-card card-2">
+                                <i class="fas fa-users"></i><span>Community Network</span>
                             </div>
-                            <div class="floating-card card-3" onclick="animateFloatingCard(this)">
-                                <i class="fas fa-mobile-alt"></i>
-                                <span>Instant Alerts</span>
+                            <div class="floating-card card-3">
+                                <i class="fas fa-shield-alt"></i><span>Verified Reports</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
+            
+            <!-- Trust Bar -->
+            <div class="trust-bar">
+                <div class="container">
+                    <div class="trust-items">
+                        <div class="trust-item"><i class="fas fa-lock"></i> Secure & Private</div>
+                        <div class="trust-item"><i class="fas fa-bolt"></i> Instant Community Alerts</div>
+                        <div class="trust-item"><i class="fas fa-check-double"></i> Admin Verified</div>
+                        <div class="trust-item"><i class="fas fa-globe-africa"></i> Kenya-Wide Coverage</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Interactive Features Section -->
-        <section class="features-section">
+        <section class="features-section" id="how-it-works">
             <div class="container">
                 <div class="section-header">
+                    <span class="section-tag">Simple & Effective</span>
                     <h2 class="section-title">How FindMe Works</h2>
-                    <p class="section-subtitle">Simple, fast, and effective missing person reporting</p>
+                    <p class="section-subtitle">Four simple steps to connect families with the power of the community</p>
                 </div>
-                
-                <div class="features-timeline">
-                    <div class="timeline-line"></div>
-                    <div class="feature-step" data-step="1" onclick="highlightStep(this)">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="feature-icon">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
-                            <h3>Create Profile</h3>
-                            <p>Set up your account in minutes and join local community groups</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-user-plus"></i>
                         </div>
+                        <h3>1. Create an Account</h3>
+                        <p>Sign up in minutes with your name, phone number, and county to join the network.</p>
                     </div>
-                    
-                    <div class="feature-step" data-step="2" onclick="highlightStep(this)">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="feature-icon">
-                                <i class="fas fa-camera"></i>
-                            </div>
-                            <h3>Post Missing Person</h3>
-                            <p>Upload photos and details with flexible posting options</p>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-camera"></i>
                         </div>
+                        <h3>2. Post Missing Person</h3>
+                        <p>Upload a clear photo and details. A small M-Pesa fee ensures all reports are genuine.</p>
                     </div>
-                    
-                    <div class="feature-step" data-step="3" onclick="highlightStep(this)">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="feature-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h3>Community Search</h3>
-                            <p>Collaborate with thousands of volunteers across Kenya</p>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-bullhorn"></i>
                         </div>
+                        <h3>3. Community Search</h3>
+                        <p>Members instantly share the report across their networks and submit secure tips.</p>
                     </div>
-                    
-                    <div class="feature-step" data-step="4" onclick="highlightStep(this)">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h3>Reunite Families</h3>
-                            <p>Direct coordination with authorities and community</p>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-shield-alt"></i>
                         </div>
+                        <h3>4. Verified Resolution</h3>
+                        <p>Admins review and approve every "found" update to maintain platform trust and safety.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Success Stories -->
         <section class="success-stories">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Success Stories</h2>
-                    <p class="section-subtitle">Real families reunited through our platform</p>
+                    <span class="section-tag">Real Impact</span>
+                    <h2 class="section-title">Recently Reunited</h2>
+                    <p class="section-subtitle">Real cases resolved through the power of our community</p>
                 </div>
-                
-                <div class="stories-carousel">
-                    <div class="story-card active" onclick="selectStory(this, 0)">
-                        <div class="story-image">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5pwEzMFuA3BLP6wTD5nmca9ZwMMWOi3AZJw&s" alt="Success story">
-                            <div class="story-overlay">
-                                <i class="fas fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div class="story-content">
-                            <h4>Sarah, 8 years old</h4>
-                            <p>"Found safe within 6 hours thanks to community response"</p>
-                            <div class="story-meta">
-                                <span class="story-location">Nairobi</span>
-                                <span class="story-time">2 days ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="story-card" onclick="selectStory(this, 1)">
-                        <div class="story-image">
-                            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUSExIWFRUWGB0YGBgYFhcXHxsaFxYXGh0XFxcYHSggGB0lHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy[...]">
-                            <div class="story-overlay">
-                                <i class="fas fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div class="story-content">
-                            <h4>Peter, 72 years old</h4>
-                            <p>"Community volunteers located him in Mombasa"</p>
-                            <div class="story-meta">
-                                <span class="story-location">Mombasa</span>
-                                <span class="story-time">1 week ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="story-card" onclick="selectStory(this, 2)">
-                        <div class="story-image">
-                            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUSEhIVFRUVFxUVGBUVFRcVFRUVGBUWFhUVFRUYHSggGBolGxUVITEhJSkrLi8uFx8zODMtNygtLisBCgoKDg0OGxAQGi[...]">
-                            <div class="story-overlay">
-                                <i class="fas fa-play-circle"></i>
-                            </div>
-                        </div>
-                        <div class="story-content">
-                            <h4>Mary, 25 years old</h4>
-                            <p>"Real-time alerts helped find her quickly"</p>
-                            <div class="story-meta">
-                                <span class="story-location">Kisumu</span>
-                                <span class="story-time">2 weeks ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="story-indicators">
-                    <span class="indicator active" onclick="goToStory(0)"></span>
-                    <span class="indicator" onclick="goToStory(1)"></span>
-                    <span class="indicator" onclick="goToStory(2)"></span>
+                <div class="stories-carousel" id="found-stories">
+                    <p style="text-align:center;color:var(--text-secondary);width:100%;">No testimonials published yet.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive CTA Section -->
         <section class="cta-section">
             <div class="container">
                 <div class="cta-content">
+                    <i class="fas fa-hands-helping" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.9;"></i>
                     <h2>Ready to Make a Difference?</h2>
-                    <p>Join thousands of Kenyans helping to reunite families every day</p>
+                    <p>Join thousands of Kenyans helping reunite families across the country. Every share counts.</p>
                     <div class="cta-actions">
-                         <a href="#" onclick="showTipsModal('tip-us')" class="btn-primary btn-large">
-                            <i class="fas fa-rocket"></i>
-                            Start Helping Today
+                        <a href="register.html" class="btn-primary btn-large glow-btn">
+                            <i class="fas fa-rocket"></i> Start Helping Today
                         </a>
-                        <button class="btn-secondary btn-large" onclick="window.location.href='register.html'">
-                            <i class="fas fa-play"></i>
-                            Explore Platform
-                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="landing-footer">
             <div class="container">
                 <div class="footer-content">
                     <div class="footer-brand">
                         <div class="nav-brand">
-                            <div class="brand-icon">
-                                <i class="fas fa-search-location"></i>
-                            </div>
+                            <div class="brand-icon"><i class="fas fa-search-location"></i></div>
                             <span class="brand-text">FindMe</span>
                         </div>
-                        <p>Reuniting families across Kenya through community power</p>
+                        <p>Reuniting families across Kenya through the power of community and technology.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
                     </div>
-                    
                     <div class="footer-links">
                         <div class="footer-column">
                             <h4>Platform</h4>
-                            <a href="#" onclick="showAbout('about-us')">About Us</a>
-                            <a href="#" onclick="showContactForm()">Contact Us</a>
-                           
+                            <a href="#" onclick="showAbout()">About Us</a>
+                            <a href="#" onclick="showContactInfo()">Contact Us</a>
                         </div>
-                        
                         <div class="footer-column">
                             <h4>Support</h4>
-                            <a href="#" onclick="showHelpSupport('help-center')">Help Center</a>
-                            <a href="#" onclick="showFeedbackForm()">Feedback</a>
+                            <a href="#" onclick="showHelpSupport()">Help Center</a>
+                            <a href="#" onclick="showContactInfo()">Emergency Contacts</a>
                         </div>
-                        
                         <div class="footer-column">
                             <h4>Legal</h4>
-                            <a href="#" onclick="showTerms('terms')">Terms of Service</a>
-                            <a href="#" onclick="showPrivacy('privacy')">Privacy Policy</a>
+                            <a href="#" onclick="showTerms()">Terms of Service</a>
+                            <a href="#" onclick="showPrivacy()">Privacy Policy</a>
                         </div>
                     </div>
                 </div>
-                
                 <div class="footer-bottom">
-                    <p>&copy; 2025 FindMe. All rights reserved . Made with ❤️ for Kenya</p>
+                    <p>&copy; 2026 FindMe. All rights reserved. Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for Kenya</p>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Main Dashboard -->
     <div id="dashboard" class="page">
-        <!-- Header -->
         <header class="main-header">
             <div class="header-left">
-                <div class="logo">
-                    <i class="fas fa-search-location"></i>
-                    <span>FindMe</span>
-                </div>
+                <div class="logo"><i class="fas fa-search-location"></i><span>FindMe</span></div>
                 <div class="search-container">
-                    <input type="text" placeholder="Search missing persons, groups..." class="search-input">
-                    <button class="search-filters-btn" onclick="toggleSearchFilters()">
-                        <i class="fas fa-filter"></i>
-                    </button>
-                    <button class="search-advanced-btn" onclick="showAdvancedSearch()">
-                        <i class="fas fa-search-plus"></i>
-                    </button>
+                    <input type="text" id="search-input" placeholder="Search missing persons..." class="search-input">
                 </div>
             </div>
             <div class="header-right">
-                <button class="header-btn" onclick="toggleChat()">
-                    <i class="fas fa-comments"></i>
-                </button>
-                <button class="header-btn notification-btn" onclick="showNotifications()">
+                <button class="header-btn" onclick="showTab('notifications')" title="Notifications">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge hidden" id="notification-badge">0</span>
                 </button>
                 <div class="profile-dropdown" onclick="toggleHamburgerMenu()">
-                    <img src="/placeholder.svg?height=40&width=40" alt="Profile" class="profile-avatar">
+                    <img src="https://api.dicebear.com/7.x/initials/svg?seed=U" alt="Profile" class="profile-avatar" id="header-avatar">
                     <i class="fas fa-chevron-down profile-arrow"></i>
                 </div>
             </div>
         </header>
 
-        <!-- Search Filters -->
-        <div id="search-filters" class="search-filters hidden">
-            <div class="filters-content">
-                <div class="filter-group">
-                    <label>Age Range</label>
-                    <select>
-                        <option>All Ages</option>
-                        <option>0-12 (Child)</option>
-                        <option>13-17 (Teen)</option>
-                        <option>18-65 (Adult)</option>
-                        <option>65+ (Senior)</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Location</label>
-                    <select>
-                        <option>All Locations</option>
-                        <option>Nairobi</option>
-                        <option>Mombasa</option>
-                        <option>Kisumu</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Date Missing</label>
-                    <select>
-                        <option>Any Time</option>
-                        <option>Last 24 hours</option>
-                        <option>Last Week</option>
-                        <option>Last Month</option>
-                    </select>
-                </div>
-                <button class="btn-primary">Apply Filters</button>
-            </div>
-        </div>
-
-        <!-- Navigation -->
         <nav class="main-nav">
-            <button class="nav-item active" onclick="showTab('home')">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
+            <button class="nav-item active" data-tab="home" onclick="showTab('home')">
+                <i class="fas fa-home"></i><span>Home</span>
             </button>
-            <button class="nav-item" onclick="showTab('groups')">
-                <i class="fas fa-users"></i>
-                <span>Groups</span>
+            <button class="nav-item" data-tab="mine" onclick="showTab('mine')">
+                <i class="fas fa-user"></i><span>My Reports</span>
             </button>
-            <button class="nav-item" onclick="showTab('notifications')">
-                <i class="fas fa-bell"></i>
-                <span>Notifications</span>
+            <button class="nav-item" data-tab="notifications" onclick="showTab('notifications')">
+                <i class="fas fa-bell"></i><span>Notifications</span>
+            </button>
+            <button class="nav-item hidden" id="admin-nav-item" data-tab="admin" onclick="showTab('admin')">
+                <i class="fas fa-shield-alt"></i><span>Admin</span>
             </button>
         </nav>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Home Tab -->
             <div id="home-tab" class="tab-content active">
                 <div class="content-layout">
                     <aside class="sidebar-left">
-                        <div class="sidebar-section user-info">
-                            <h3>Your Impact</h3>
-                            <div class="user-stats">
-                                <div class="user-stat">
-                                    <span class="user-stat-label">Cases Shared</span>
-                                    <span class="user-stat-value">23</span>
-                                </div>
-                                <div class="user-stat">
-                                    <span class="user-stat-label">Tips Provided</span>
-                                    <span class="user-stat-value">7</span>
-                                </div>
-                                <div class="user-stat">
-                                    <span class="user-stat-label">Success Stories</span>
-                                    <span class="user-stat-value">3</span>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div class="sidebar-section">
                             <h3>Quick Actions</h3>
                             <button class="sidebar-btn" onclick="showPostModal()">
-                                <i class="fas fa-plus"></i>
-                                Post Missing Person
-                            </button>
-                            <button class="sidebar-btn" onclick="showAdvancedSearch()">
-                                <i class="fas fa-search"></i>
-                                Advanced Search
-                            </button>
-                            <button class="sidebar-btn location-btn" onclick="getCurrentLocation()">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Use My Location
+                                <i class="fas fa-plus"></i> Report Missing Person
                             </button>
                         </div>
-                        
                         <div class="sidebar-section">
-                            <h3>My Groups</h3>
-                            <div class="group-list">
-                                <div class="group-item">
-                                    <img src="/placeholder.svg?height=30&width=30" alt="Group">
-                                    <span>Nairobi Central</span>
+                            <h3>Filter</h3>
+                            <div class="status-tabs" id="status-filter" style="flex-direction:column;">
+                                <div class="status-tab all active" data-status="all" onclick="filterByStatus('all')">
+                                    <i class="fas fa-list" style="margin-right: 0.5rem;"></i><span>All Reports</span>
                                 </div>
-                                <div class="group-item">
-                                    <img src="/placeholder.svg?height=30&width=30" alt="Group">
-                                    <span>Westlands Area</span>
+                                <div class="status-tab urgent" data-status="urgent" onclick="filterByStatus('urgent')">
+                                    <div class="status-indicator urgent-indicator"></div><i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i><span>Urgent</span>
                                 </div>
+                                <div class="status-tab missing" data-status="missing" onclick="filterByStatus('missing')">
+                                    <div class="status-indicator missing-indicator"></div><i class="fas fa-search" style="margin-right: 0.5rem;"></i><span>Missing</span>
+                                </div>
+                                <div class="status-tab found" data-status="found" onclick="filterByStatus('found')">
+                                    <div class="status-indicator found-indicator"></div><i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i><span>Found</span>
+                                </div>
+                                <div class="status-tab missing" data-status="found_pending" onclick="filterByStatus('found_pending')">
+                                    <div class="status-indicator missing-indicator"></div><i class="fas fa-hourglass-half" style="margin-right: 0.5rem;"></i><span>Pending Review</span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top:1rem;margin-bottom:0;">
+                                <label>County</label>
+                                <select id="county-filter"><option value="all">All Counties</option></select>
                             </div>
                         </div>
                     </aside>
 
                     <div class="main-feed">
-                        <!-- Dashboard Welcome -->
                         <div class="dashboard-welcome">
-                            <h2>Welcome to FindMe! <span class="user-role-badge role-user">USER</span></h2>
-                            <p>Ready to help reunite families? Every action you take makes a difference in our community.</p>
-                            <div class="quick-stats">
-                                <div class="quick-stat">
-                                    <span class="quick-stat-number">12</span>
-                                    <span class="quick-stat-label">Your Posts</span>
-                                </div>
-                                <div class="quick-stat">
-                                    <span class="quick-stat-number">156</span>
-                                    <span class="quick-stat-label">People Helped</span>
-                                </div>
-                                <div class="quick-stat">
-                                    <span class="quick-stat-number">8</span>
-                                    <span class="quick-stat-label">Groups Joined</span>
-                                </div>
-                            </div>
+                            <h2 id="welcome-heading">Welcome to FindMe!</h2>
+                            <p>Ready to help reunite families? Every report and share makes a difference.</p>
                         </div>
 
-                        <!-- Post Creation -->
                         <div class="post-creator">
                             <div class="post-creator-header">
-                                <img src="/placeholder.svg?height=40&width=40" alt="Your avatar" class="avatar">
-                                <button class="post-input" onclick="showPostModal()">
-                                    Report a missing person...
-                                </button>
-                            </div>
-                            <div class="post-creator-actions">
-                                <button class="post-action-btn" onclick="showPostModal()">
-                                    <i class="fas fa-camera"></i>
-                                    Photo
-                                </button>
-                                <button class="post-action-btn" onclick="getCurrentLocation()">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Location
-                                </button>
-                                <button class="post-action-btn" onclick="showPostModal()">
-                                    <i class="fas fa-clock"></i>
-                                    Urgent
-                                </button>
+                                <img src="https://api.dicebear.com/7.x/initials/svg?seed=U" alt="Your avatar" class="avatar" id="creator-avatar">
+                                <button class="post-input" onclick="showPostModal()">Report a missing person...</button>
                             </div>
                         </div>
 
-                        <!-- Status Section -->
-                        <div class="status-section">
-                            <h3>🔄 Recent Status Updates</h3>
-                            <div class="status-tabs">
-                                <div class="status-tab urgent" onclick="filterByStatus('urgent')">
-                                    <div class="status-indicator urgent-indicator"></div>
-                                    <span>🚨 Urgent (12)</span>
-                                </div>
-                                <div class="status-tab missing" onclick="filterByStatus('missing')">
-                                    <div class="status-indicator missing-indicator"></div>
-                                    <span>🔍 Missing (45)</span>
-                                </div>
-                                <div class="status-tab found" onclick="filterByStatus('found')">
-                                    <div class="status-indicator found-indicator"></div>
-                                    <span>✅ Found (8)</span>
-                                </div>
-                                <div class="status-tab all active" onclick="filterByStatus('all')">
-                                    <div class="status-indicator all-indicator"></div>
-                                    <span>📋 All Posts</span>
-                                </div>
-                            </div>
-                            
-                            <div class="status-stories">
-                                <div class="status-story urgent-story" onclick="viewStatusStory('urgent1')">
-                                    <div class="story-ring urgent-ring">
-                                        <img src="/placeholder.svg?height=60&width=60" alt="User" class="story-avatar">
-                                    </div>
-                                    <span class="story-label">Mary K.</span>
-                                    <span class="story-time">2h</span>
-                                </div>
-                                <div class="status-story missing-story" onclick="viewStatusStory('missing1')">
-                                    <div class="story-ring missing-ring">
-                                        <img src="/placeholder.svg?height=60&width=60" alt="User" class="story-avatar">
-                                    </div>
-                                    <span class="story-label">John M.</span>
-                                    <span class="story-time">5h</span>
-                                </div>
-                                <div class="status-story found-story" onclick="viewStatusStory('found1')">
-                                    <div class="story-ring found-ring">
-                                        <img src="/placeholder.svg?height=60&width=60" alt="User" class="story-avatar">
-                                    </div>
-                                    <span class="story-label">Grace W.</span>
-                                    <span class="story-time">1d</span>
-                                </div>
-                                <div class="add-status-story" onclick="showPostModal()">
-                                    <div class="story-ring add-ring">
-                                        <i class="fas fa-plus"></i>
-                                    </div>
-                                    <span class="story-label">Add Status</span>
-                                </div>
-                            </div>
+                        <div id="feed-loading" style="text-align:center;padding:2rem;color:var(--text-secondary);">
+                            <i class="fas fa-spinner fa-spin"></i> Loading reports...
                         </div>
-
-                        <!-- Feed Posts -->
-                        <div class="feed-posts" id="feed-posts">
-                            <article class="post-card">
-                                <div class="post-header">
-                                    <img src="/placeholder.svg?height=40&width=40" alt="User" class="avatar">
-                                    <div class="post-info">
-                                        <h4>Mary Wanjiku</h4>
-                                        <span class="post-time">2 hours ago • Nairobi Central</span>
-                                    </div>
-                                    <div class="post-status urgent">URGENT</div>
-                                </div>
-                                <div class="post-content">
-                                    <p>My 8-year-old daughter Sarah went missing from Uhuru Park this afternoon. She was wearing a red dress and white shoes. Please share and help us find her.</p[...]
-                                    <div class="missing-person-details">
-                                        <img src="/placeholder.svg?height=200&width=150" alt="Missing person" class="missing-photo">
-                                        <div class="details">
-                                            <div class="detail-item">
-                                                <strong>Name:</strong> Sarah Wanjiku
-                                            </div>
-                                            <div class="detail-item">
-                                                <strong>Age:</strong> 8 years old
-                                            </div>
-                                            <div class="detail-item">
-                                                <strong>Last Seen:</strong> Uhuru Park, 3:00 PM
-                                            </div>
-                                            <div class="detail-item">
-                                                <strong>Contact:</strong> 0712345678
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="post-actions">
-                                    <button class="action-btn" onclick="sharePost(this)">
-                                        <i class="fas fa-share"></i>
-                                        Share (<span class="share-count">234</span>)
-                                    </button>
-                                    <button class="action-btn" onclick="showTipsModal(this)">
-                                        <i class="fas fa-comment"></i>
-                                        Tips (<span class="tips-count">12</span>)
-                                    </button>
-                                    <button class="action-btn" onclick="contactFamily(this)">
-                                        <i class="fas fa-phone"></i>
-                                        Contact
-                                    </button>
-                                </div>
-                            </article>
-
-                            <article class="post-card">
-                                <div class="post-header">
-                                    <img src="/placeholder.svg?height=40&width=40" alt="User" class="avatar">
-                                    <div class="post-info">
-                                        <h4>John Kamau</h4>
-                                        <span class="post-time">5 hours ago • Mombasa</span>
-                                    </div>
-                                    <div class="post-status found">FOUND</div>
-                                </div>
-                                <div class="post-content">
-                                    <p><strong>UPDATE: FOUND SAFE!</strong> Thank you everyone for sharing. My father has been found and is safe. Special thanks to the Mombasa community group.</p[...]
-                                    <div class="missing-person-details">
-                                        <img src="/placeholder.svg?height=200&width=150" alt="Found person" class="missing-photo">
-                                        <div class="details">
-                                            <div class="detail-item">
-                                                <strong>Name:</strong> Peter Kamau
-                                            </div>
-                                            <div class="detail-item">
-                                                <strong>Age:</strong> 72 years old
-                                            </div>
-                                            <div class="detail-item">
-                                                <strong>Status:</strong> Found Safe
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="post-actions">
-                                    <button class="action-btn" onclick="celebratePost(this)">
-                                        <i class="fas fa-heart"></i>
-                                        Celebrate (<span class="celebrate-count">89</span>)
-                                    </button>
-                                    <button class="action-btn" onclick="showCommentsModal(this)">
-                                        <i class="fas fa-comment"></i>
-                                        Comments (<span class="comments-count">23</span>)
-                                    </button>
-                                </div>
-                            </article>
-                        </div>
+                        <div class="feed-posts" id="feed-posts"></div>
+                        <p id="feed-empty" class="hidden" style="text-align:center;color:var(--text-secondary);padding:2rem;">
+                            No reports match this filter yet.
+                        </p>
                     </div>
 
                     <aside class="sidebar-right">
                         <div class="sidebar-section">
-                            <h3>Recent Activity</h3>
-                            <div class="activity-list" id="activity-list">
-                                <div class="activity-item">
-                                    <i class="fas fa-user-plus"></i>
-                                    <span>3 new members joined Nairobi Central</span>
-                                </div>
-                                <div class="activity-item">
-                                    <i class="fas fa-heart"></i>
-                                    <span>Sarah found safe in Westlands</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sidebar-section">
                             <h3>Emergency Contacts</h3>
                             <div class="emergency-contacts">
                                 <div class="contact-item" onclick="callEmergency('999')">
-                                    <strong>Police Emergency</strong>
-                                    <span>999 / 911</span>
+                                    <strong>Police Emergency</strong><span>999 / 911</span>
                                 </div>
-                                <div class="contact-item" onclick="callEmergency('0800-MISSING')">
-                                    <strong>Missing Persons Unit</strong>
-                                    <span>0800-MISSING</span>
+                                <div class="contact-item" onclick="callEmergency('116')">
+                                    <strong>Child Helpline</strong><span>116</span>
                                 </div>
                             </div>
                         </div>
@@ -667,174 +331,152 @@
                 </div>
             </div>
 
-            <!-- Groups Tab -->
-            <div id="groups-tab" class="tab-content">
+            <div id="mine-tab" class="tab-content">
                 <div class="groups-header">
-                    <h2>Your Groups</h2>
-                    <button class="btn-primary" onclick="showCreateGroupModal()">
-                        <i class="fas fa-plus"></i>
-                        Create Group
-                    </button>
+                    <h2>My Reports</h2>
+                    <button class="btn-primary" onclick="showPostModal()"><i class="fas fa-plus"></i> New Report</button>
                 </div>
-                <div class="groups-grid" id="groups-grid">
-                    <div class="group-card">
-                        <div class="group-cover">
-                            <img src="/placeholder.svg?height=120&width=300" alt="Group cover">
-                        </div>
-                        <div class="group-info">
-                            <h3>Nairobi Central</h3>
-                            <p>1,234 members • 15 active cases</p>
-                            <button class="btn-secondary">View Group</button>
-                        </div>
-                    </div>
-                    <div class="group-card">
-                        <div class="group-cover">
-                            <img src="/placeholder.svg?height=120&width=300" alt="Group cover">
-                        </div>
-                        <div class="group-info">
-                            <h3>Westlands Area</h3>
-                            <p>567 members • 8 active cases</p>
-                            <button class="btn-secondary">View Group</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="feed-posts" id="my-posts"></div>
+                <p id="my-posts-empty" class="hidden" style="text-align:center;color:var(--text-secondary);padding:2rem;">
+                    You haven't posted any reports yet.
+                </p>
             </div>
 
-            <!-- Notifications Tab -->
             <div id="notifications-tab" class="tab-content">
-                <div class="notifications-header">
+                <div class="groups-header">
                     <h2>Notifications</h2>
                     <button class="btn-secondary" onclick="markAllNotificationsRead()">Mark All Read</button>
                 </div>
-                <div class="notifications-list" id="notifications-list">
-                    <div class="notification-item unread" data-id="1">
-                        <div class="notification-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="notification-content">
-                            <p><strong>Great news!</strong> Sarah from your post has been found safe.</p>
-                            <span class="notification-time">2 minutes ago</span>
-                        </div>
-                        <button class="notification-close" onclick="removeNotification(1)">×</button>
+                <div id="notifications-list"></div>
+                <p id="notifications-empty" class="hidden" style="text-align:center;color:var(--text-secondary);padding:2rem;">
+                    No notifications yet.
+                </p>
+            </div>
+
+            <div id="admin-tab" class="tab-content">
+                <div class="groups-header">
+                    <h2>Admin Dashboard</h2>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Reports by Status</h3>
+                    <div id="admin-analytics"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-hourglass-half" style="margin-right: 0.5rem;"></i> Pending Review (<span id="admin-pending-count">0</span>)</h3>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1rem;">
+                        Reporters marked these as found. Approve to publish, or reject to send them back to active status.
+                    </p>
+                    <div id="admin-pending-table"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>All Reports (<span id="admin-report-count">0</span>)</h3>
+                    <div id="admin-reports-table"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>All Users (<span id="admin-user-count">0</span>)</h3>
+                    <div id="admin-users-table"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+                        <h3 style="margin:0;"><i class="fas fa-comments" style="margin-right: 0.5rem;"></i> Landing Page Testimonials</h3>
+                        <button class="btn-primary" onclick="showTestimonialModal()"><i class="fas fa-plus"></i> Add Testimonial</button>
                     </div>
-                    <div class="notification-item" data-id="2">
-                        <div class="notification-icon">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                        <div class="notification-content">
-                            <p>Someone commented on your missing person post</p>
-                            <span class="notification-time">1 hour ago</span>
-                        </div>
-                        <button class="notification-close" onclick="removeNotification(2)">×</button>
-                    </div>
+                    <div id="admin-testimonials-table"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-shield-alt" style="margin-right: 0.5rem;"></i> Admin Activity Log</h3>
+                    <div id="admin-audit-log"></div>
                 </div>
             </div>
         </main>
 
-        <!-- Hamburger Menu -->
         <div id="hamburger-menu" class="hamburger-menu hidden">
             <div class="menu-header">
-                <img src="/placeholder.svg?height=60&width=60" alt="Profile" class="menu-avatar">
+                <img src="https://api.dicebear.com/7.x/initials/svg?seed=U" alt="Profile" class="menu-avatar" id="menu-avatar">
                 <div class="menu-user-info">
-                    <h3 id="menu-user-name">Demo User</h3>
-                    <p id="menu-user-email">demo@FindMe.com</p>
+                    <h3 id="menu-user-name">—</h3>
+                    <p id="menu-user-email">—</p>
                 </div>
             </div>
             <div class="menu-items">
                 <a href="#" class="menu-item" onclick="showProfileSettings()">
-                    <i class="fas fa-user"></i>
-                    <span>Profile Settings</span>
-                </a>
-                <a href="#" class="menu-item" onclick="showAccountSettings()">
-                    <i class="fas fa-cog"></i>
-                    <span>Account Settings</span>
-                </a>
-                <a href="#" class="menu-item" onclick="showNotificationSettings()">
-                    <i class="fas fa-bell"></i>
-                    <span>Notification Settings</span>
-                </a>
-                <a href="#" class="menu-item" onclick="showPrivacySettings()">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Privacy & Security</span>
+                    <i class="fas fa-user"></i><span>Profile Settings</span>
                 </a>
                 <a href="#" class="menu-item" onclick="showHelpSupport()">
-                    <i class="fas fa-question-circle"></i>
-                    <span>Help & Support</span>
+                    <i class="fas fa-question-circle"></i><span>Help & Support</span>
                 </a>
                 <a href="#" class="menu-item" onclick="showAbout()">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About FindMe</span>
+                    <i class="fas fa-info-circle"></i><span>About FindMe</span>
                 </a>
                 <hr>
-                <a href="#" class="menu-item logout-item" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
+                <a href="#" class="menu-item logout-item" onclick="signOutAndRedirect()">
+                    <i class="fas fa-sign-out-alt"></i><span>Logout</span>
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Post Modal -->
-     <!-- Post Modal -->
     <div id="post-modal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Report Missing Person</h3>
-                <button class="modal-close" onclick="hidePostModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="modal-close" onclick="hidePostModal()"><i class="fas fa-times"></i></button>
             </div>
-            <form class="post-form" onsubmit="handlePostSubmit(event)">
+            <form class="post-form" id="post-form">
+                <div id="post-form-status" class="form-status" style="display:none;margin:0 0 1rem;"></div>
                 <div class="form-section">
                     <h4>Personal Information</h4>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" name="lastName" required>
-                        </div>
+                        <div class="form-group"><label>First Name</label><input type="text" name="firstName" required></div>
+                        <div class="form-group"><label>Last Name</label><input type="text" name="lastName" required></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Age</label>
-                            <input type="number" name="age" required>
-                        </div>
+                        <div class="form-group"><label>Age</label><input type="number" name="age" min="0" max="130" required></div>
                         <div class="form-group">
                             <label>Gender</label>
                             <select name="gender" required>
                                 <option value="">Select</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
-                 <div class="form-section">
+                <div class="form-section">
                     <h4>Photo</h4>
                     <div class="photo-upload" id="photo-upload-area">
-                        <input type="file" id="photo-upload" name="photo" accept="image/*" required>
-                        <label for="photo-upload" class="upload-label">
-                            <i class="fas fa-camera"></i>
-                            <span>Upload Photo</span>
+                        <input type="file" id="photo-upload" name="photo" accept="image/*">
+                        <label for="photo-upload" class="upload-label" id="upload-label">
+                            <i class="fas fa-camera"></i><span>Upload Photo</span>
                         </label>
                         <div class="photo-preview hidden" id="photo-preview">
-                            <img id="preview-image" src="/placeholder.svg" alt="Preview">
-                            <button type="button" class="remove-photo" onclick="removePhoto()">
-                                <i class="fas fa-times"></i>
-                            </button>
+                            <img id="preview-image" src="" alt="Preview">
+                            <button type="button" class="remove-photo" onclick="removePhoto()"><i class="fas fa-times"></i></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h4>Last Known Details</h4>
-                    <div class="form-group">
-                        <label>Last Seen Location</label>
-                        <input type="text" name="lastLocation" placeholder="e.g., Uhuru Park, Nairobi" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Last Seen Location</label>
+                            <input type="text" name="lastLocation" placeholder="e.g., Uhuru Park" required>
+                        </div>
+                        <div class="form-group">
+                            <label>County</label>
+                            <select name="county" id="post-county-select" required>
+                                <option value="">Select County</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Date & Time Last Seen</label>
@@ -842,148 +484,152 @@
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea name="description" placeholder="Describe what they were wearing, any distinguishing features, circumstances of disappearance..." required></textarea>
+                        <textarea name="description" placeholder="Clothing, distinguishing features, circumstances..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Urgency</label>
+                        <select name="status" required>
+                            <option value="urgent">Urgent</option>
+                            <option value="missing">Missing</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h4>Contact Information</h4>
-                    <div class="form-group">
-                        <label>Your Phone Number</label>
-                        <input type="tel" name="contactPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Alternative Contact (Optional)</label>
-                        <input type="tel" name="altContact">
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h4>Post Duration & Payment</h4>
-                    <div class="duration-options">
-                        <label class="duration-option">
-                            <input type="radio" name="duration" value="7" data-price="500">
-                            <span class="option-content">
-                                <strong>7 Days</strong>
-                                <span class="price">KSh 500</span>
-                            </span>
-                        </label>
-                        <label class="duration-option">
-                            <input type="radio" name="duration" value="14" data-price="800">
-                            <span class="option-content">
-                                <strong>14 Days</strong>
-                                <span class="price">KSh 800</span>
-                            </span>
-                        </label>
-                        <label class="duration-option">
-                            <input type="radio" name="duration" value="30" data-price="1200">
-                            <span class="option-content">
-                                <strong>30 Days</strong>
-                                <span class="price">KSh 1,200</span>
-                            </span>
-                        </label>
-                    </div>
+                    <div class="form-group"><label>Your Phone Number</label><input type="tel" name="contactPhone" required></div>
+                    <div class="form-group"><label>Alternative Contact (Optional)</label><input type="tel" name="altContact"></div>
                 </div>
 
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="hidePostModal()">Cancel</button>
-                    <button type="submit" class="btn-primary">Proceed to Payment</button>
+                    <button type="submit" class="btn-primary" id="post-submit-btn">Publish Report</button>
                 </div>
             </form>
         </div>
     </div>
 
-
-    <!-- Settings Modals -->
     <div id="settings-modal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="settings-title">Settings</h3>
-                <button class="modal-close" onclick="hideSettingsModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="modal-close" onclick="hideSettingsModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="settings-content" id="settings-content">
-                <!-- Content will be dynamically loaded -->
-            </div>
+            <div class="settings-content" id="settings-content"></div>
         </div>
     </div>
 
-    <!-- Chat System -->
-    <div id="chat-system" class="chat-system hidden">
-        <div class="chat-header">
-            <h4>Community Chat</h4>
-            <div class="chat-status">
-                <span class="status-indicator online"></span>
-                <span>Online</span>
-            </div>
-            <button class="chat-close" onclick="toggleChat()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="chat-message system">
-                <span>Welcome to the community chat. Share tips and coordinate search efforts responsibly.</span>
-            </div>
-        </div>
-        <div class="chat-input-container">
-            <input type="text" id="chat-input" placeholder="Type a message..." onkeypress="handleChatKeyPress(event)" maxlength="500">
-            <button onclick="sendChatMessage()" id="send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="modal hidden">
+    <div id="tip-modal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Complete Payment</h3>
-                <button class="modal-close" onclick="showPaymentModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h3>Provide a Tip</h3>
+                <button class="modal-close" onclick="hideTipModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="payment-content">
-                <div class="payment-summary">
-                    <h4>Payment Summary</h4>
-                    <div class="summary-item">
-                        <span>Post Duration:</span>
-                        <span id="selected-duration">14 Days</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Amount:</span>
-                        <span id="payment-amount">KSh 800</span>
-                    </div>
-                </div>
-                <div class="mpesa-payment">
-                    <div class="mpesa-logo">
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAACUCAMAAAD79nauAAAA2FBMVEX///85tUrY49LtHCTV4c8ws0M2tEf2+PW44L0jsDmn2azJ58xqw3QTri8csDXZ7tzs9u3r8ehzxnzk8+bsAAB[...]">
-                    </div>
-                    <p>Enter your M-Pesa number to receive an STK push</p>
+            <form class="post-form" id="tip-form">
+                <div class="form-section">
+                    <h4>Your Tip</h4>
                     <div class="form-group">
-                        <label>M-Pesa Phone Number</label>
-                        <input type="tel" placeholder="254712345678" id="mpesa-number">
+                        <label>What information do you have?</label>
+                        <textarea name="message" placeholder="Please provide any information that might help..." required></textarea>
                     </div>
-                    <button class="btn-primary btn-full" onclick="initiateMpesaPayment()">
-                        Send STK Push
-                    </button>
-                </div>
-                <div id="payment-status" class="payment-status hidden">
-                    <div class="status-icon">
-                        <i class="fas fa-clock"></i>
+                    <div class="form-group">
+                        <label>Your Contact (Optional)</label>
+                        <input type="tel" name="contactPhone" placeholder="Phone number if you want to be contacted">
                     </div>
-                    <p>Please check your phone and enter your M-Pesa PIN to complete the payment</p>
-                    <div class="status-timer">
-                        <span>Time remaining: </span>
-                        <span id="countdown">02:00</span>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="anonymous" style="width:auto;display:inline-block;"> Submit anonymously</label>
                     </div>
                 </div>
-            </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="hideTipModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit Tip</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Notification Toast Container -->
+    <div id="resolve-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Mark as Found</h3>
+                <button class="modal-close" onclick="hideResolveModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="post-form" id="resolve-form">
+                <div class="form-section">
+                    <p style="color:var(--text-secondary);margin-bottom:1rem;">
+                        This sends the report for admin review before it's shown publicly as "Found" — this keeps
+                        the platform trustworthy for everyone.
+                    </p>
+                    <div class="form-group">
+                        <label>How / where were they found? (shown to the reviewing admin)</label>
+                        <textarea name="resolutionNote" placeholder="e.g. Found safe at a relative's home in Kikuyu, reunited with family on..." required></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="hideResolveModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit for Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="testimonial-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="testimonial-modal-title">Add Testimonial</h3>
+                <button class="modal-close" onclick="hideTestimonialModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="post-form" id="testimonial-form">
+                <input type="hidden" id="testimonial-id" value="">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label>Quote</label>
+                        <textarea id="testimonial-quote" placeholder="e.g. Found safe within 6 hours thanks to community response" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Author Name</label><input type="text" id="testimonial-author" required></div>
+                        <div class="form-group"><label>Location</label><input type="text" id="testimonial-location"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo</label>
+                        <div class="photo-upload compact" id="testimonial-photo-upload-area">
+                            <input type="file" id="testimonial-photo-file" accept="image/*">
+                            <label for="testimonial-photo-file" class="upload-label" id="testimonial-upload-label">
+                                <i class="fas fa-camera"></i><span>Upload Photo</span>
+                            </label>
+                            <div class="photo-preview hidden" id="testimonial-photo-preview">
+                                <img id="testimonial-preview-image" src="" alt="Preview">
+                                <button type="button" class="remove-photo" onclick="removeTestimonialPhoto()"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <input type="url" id="testimonial-photo" placeholder="Or paste an image URL instead" style="margin-top:0.75rem;">
+                    </div>
+                    <div class="form-group checkbox-row">
+                        <input type="checkbox" id="testimonial-approved">
+                        <label style="margin:0;">Published (visible on the public landing page)</label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="hideTestimonialModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Testimonial</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="notification-container" class="notification-container"></div>
 
-    <script src="script.js"></script>
+   
+    <script src="js/env.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const select = document.getElementById("post-county-select");
+        if (select && typeof KENYA_COUNTIES !== 'undefined') {
+          select.innerHTML += KENYA_COUNTIES.map((c) => `<option value="${c}">${c}</option>`).join("");
+        }
+      });
+    </script>
 </body>
 </html>

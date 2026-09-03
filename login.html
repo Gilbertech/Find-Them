@@ -1,474 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - FindThem</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - FindMe</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #1877f2 0%, #667eea 100%);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .auth-container {
+      background: white; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+      padding: 48px 40px; width: 100%; max-width: 440px; position: relative; overflow: hidden;
+    }
+    .auth-container::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+      background: linear-gradient(90deg, #1877f2, #667eea);
+    }
+    .auth-header { text-align: center; margin-bottom: 32px; }
+    .auth-header .logo-icon {
+      width: 64px; height: 64px; background: linear-gradient(135deg, #1877f2, #667eea);
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; color: white; font-size: 28px;
+    }
+    .auth-header h2 { color: #1c1e21; font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .auth-header p { color: #65676b; font-size: 15px; line-height: 1.5; }
+    
+    .auth-form { margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; position: relative; }
+    .form-group label {
+      display: block; font-size: 14px; font-weight: 600; color: #1c1e21; margin-bottom: 8px;
+    }
+    .form-group input {
+      width: 100%; padding: 14px 16px; border: 2px solid #e4e6ea; border-radius: 10px;
+      font-size: 15px; transition: all 0.2s ease; background: #f0f2f5; font-family: inherit;
+    }
+    .form-group input:focus {
+      outline: none; border-color: #1877f2; background: white; box-shadow: 0 0 0 4px rgba(24,119,242,0.1);
+    }
+    .form-group input::placeholder { color: #8a8d91; }
+    
+    .remember-me {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 24px; cursor: pointer;
+    }
+    .remember-me input[type="checkbox"] {
+      width: 18px; height: 18px; accent-color: #1877f2; cursor: pointer;
+    }
+    .remember-me span {
+      font-size: 14px; color: #65676b; font-weight: 500; user-select: none;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .auth-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 100%;
-            max-width: 480px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .auth-header h2 {
-            color: #2d3748;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .auth-header p {
-            color: #718096;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .demo-credentials {
-            background: #f8fafc;
-            border: 2px dashed #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .demo-credentials h4 {
-            color: #4a5568;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .demo-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .demo-user {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .demo-user:hover {
-            background: #edf2f7;
-            border-color: #667eea;
-            transform: translateY(-1px);
-        }
-
-        .demo-user strong {
-            color: #2d3748;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .demo-user span {
-            color: #718096;
-            font-size: 12px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .auth-form {
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-group input::placeholder {
-            color: #a0aec0;
-        }
-
-        .btn-primary {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .auth-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .forgot-password {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .auth-footer {
-            text-align: center;
-            padding-top: 25px;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .auth-footer p {
-            color: #718096;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .auth-footer a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .landing-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #718096 !important;
-            font-size: 13px;
-            transition: color 0.2s ease;
-        }
-
-        .landing-link:hover {
-            color: #667eea !important;
-        }
-
-        /* Success animation for demo credentials */
-        .success-fill {
-            background: #e8f5e8 !important;
-            border-color: #48bb78 !important;
-        }
-
-        /* Responsive design */
-        @media (max-width: 640px) {
-            .auth-container {
-                padding: 30px 25px;
-                margin: 20px;
-            }
-
-            .auth-header h2 {
-                font-size: 24px;
-            }
-
-            .demo-options {
-                gap: 6px;
-            }
-
-            .demo-user {
-                padding: 10px 12px;
-            }
-        }
-
-        /* Loading state */
-        .btn-primary:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-primary.loading::after {
-            content: '';
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+    .btn-primary {
+      width: 100%; background: linear-gradient(135deg, #1877f2 0%, #667eea 100%); color: white;
+      border: none; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(24,119,242,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+    
+    .auth-footer { text-align: center; padding-top: 24px; border-top: 1px solid #e4e6ea; }
+    .auth-footer p { color: #65676b; font-size: 14px; margin-bottom: 12px; }
+    .auth-footer a { color: #1877f2; text-decoration: none; font-weight: 600; transition: color 0.2s; }
+    .auth-footer a:hover { color: #166fe5; text-decoration: underline; }
+    .landing-link { display: inline-flex; align-items: center; gap: 6px; color: #65676b !important; font-size: 13px; font-weight: 500; }
+    .landing-link:hover { color: #1877f2 !important; text-decoration: none !important; }
+    
+    .form-status {
+      display: none; padding: 14px 16px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; font-weight: 500;
+      animation: slideDown 0.3s ease;
+    }
+    .form-status.error { display: block; background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+    .form-status.success { display: block; background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+    
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 480px) {
+      .auth-container { padding: 32px 24px; margin: 16px; }
+      .auth-header h2 { font-size: 22px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-header">
-            <h2>Welcome Back</h2>
-            <p>Sign in to continue helping find missing persons</p>
-        </div>
-        
-        <div class="demo-credentials">
-            <h4>Demo Login Credentials</h4>
-            <div class="demo-options">
-                <div class="demo-user" onclick="fillDemoCredentials('admin')">
-                    <strong><i class="fas fa-user-shield"></i> Admin User</strong>
-                    <span>admin@findthem.com / admin123</span>
-                </div>
-                <div class="demo-user" onclick="fillDemoCredentials('user')">
-                    <strong><i class="fas fa-user"></i> Regular User</strong>
-                    <span>user@findthem.com / user123</span>
-                </div>
-                <div class="demo-user" onclick="fillDemoCredentials('police')">
-                    <strong><i class="fas fa-badge"></i> Police Officer</strong>
-                    <span>police@findthem.com / police123</span>
-                </div>
-            </div>
-        </div>
-        
-        <form class="auth-form" onsubmit="handleLogin(event)">
-            <div class="form-group">
-                <input type="email" name="email" placeholder="Email address" required>
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Password" required>
-            </div>
-            <button type="submit" class="btn-primary">
-                <i class="fas fa-sign-in-alt"></i> Sign In
-            </button>
-            <div class="auth-links">
-                <a href="#" class="forgot-password">Forgot Password?</a>
-            </div>
-        </form>
-        
-        <div class="auth-footer">
-            <p>Don't have an account? <a href="register.html">Sign up</a></p>
-            <p><a href="index.html" class="landing-link">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a></p>
-        </div>
+  <div class="auth-container">
+    <div class="auth-header">
+      <div class="logo-icon">
+        <i class="fas fa-search-location"></i>
+      </div>
+      <h2>Welcome Back</h2>
+      <p>Sign in to continue helping find missing persons</p>
     </div>
 
-    <script>
-        function fillDemoCredentials(userType) {
-            const emailInput = document.querySelector('input[name="email"]');
-            const passwordInput = document.querySelector('input[name="password"]');
+    <div id="form-status" class="form-status"></div>
 
-            const credentials = {
-                admin: { email: "admin@findthem.com", password: "admin123" },
-                user: { email: "user@findthem.com", password: "user123" },
-                police: { email: "police@findthem.com", password: "police123" },
-            };
+    <form class="auth-form" id="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+      
+      <label class="remember-me">
+        <input type="checkbox" id="remember-me" checked>
+        <span>Remember me for 30 days</span>
+      </label>
 
-            if (emailInput && passwordInput && credentials[userType]) {
-                emailInput.value = credentials[userType].email;
-                passwordInput.value = credentials[userType].password;
+      <button type="submit" class="btn-primary" id="submit-btn">
+        <i class="fas fa-sign-in-alt"></i> Sign In
+      </button>
+    </form>
 
-                // Add success animation
-                emailInput.classList.add('success-fill');
-                passwordInput.classList.add('success-fill');
+    <div class="auth-footer">
+      <p>Don't have an account? <a href="register.html">Create an account</a></p>
+      <p><a href="index.html" class="landing-link">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a></p>
+    </div>
+  </div>
 
-                setTimeout(() => {
-                    emailInput.classList.remove('success-fill');
-                    passwordInput.classList.remove('success-fill');
-                }, 1500);
-            }
-        }
+  <script src="js/env.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    redirectIfAuthed();
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const email = formData.get("email");
-            const password = formData.get("password");
-            const submitBtn = event.target.querySelector('button[type="submit"]');
+    const form = document.getElementById("login-form");
+    const statusBox = document.getElementById("form-status");
+    const submitBtn = document.getElementById("submit-btn");
 
-            // Add loading state
-            submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+    function showStatus(message, type) {
+      statusBox.textContent = message;
+      statusBox.className = `form-status ${type}`;
+    }
 
-            const validUsers = {
-                "admin@findthem.com": { password: "admin123", role: "admin", name: "Admin User" },
-                "user@findthem.com": { password: "user123", role: "user", name: "John Doe" },
-                "police@findthem.com": { password: "police123", role: "police", name: "Officer Smith" },
-            };
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      statusBox.className = "form-status"; // hide previous status
+      
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
-            const user = validUsers[email];
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
 
-            // Simulate network delay
-            setTimeout(() => {
-                if (!user || user.password !== password) {
-                    // Reset button state
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('loading');
-                    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
-                    
-                    alert("Invalid email or password. Please try the demo credentials.");
-                    return;
-                }
+      // Supabase handles session persistence automatically (localStorage by default).
+      const { error } = await supabaseClient.auth.signInWithPassword({ 
+        email, 
+        password 
+      });
 
-                // Store user data (note: in a real app, avoid localStorage for sensitive data)
-                const userData = {
-                    id: Date.now(),
-                    name: user.name,
-                    email: email,
-                    role: user.role,
-                    avatar: "/placeholder.svg?height=40&width=40",
-                };
+      if (error) {
+        showStatus(error.message, "error");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+        return;
+      }
 
-                // In the actual implementation, you would store this securely
-                // For demo purposes only:
-                if (typeof(Storage) !== "undefined") {
-                    sessionStorage.setItem('currentUser', JSON.stringify(userData));
-                }
-
-                // Redirect to main dashboard
-                window.location.href = "index.html#dashboard";
-            }, 1000);
-        }
-
-        // Add keyboard shortcut for demo (Alt + 1, 2, 3)
-        document.addEventListener('keydown', function(e) {
-            if (e.altKey) {
-                switch(e.key) {
-                    case '1':
-                        fillDemoCredentials('admin');
-                        break;
-                    case '2':
-                        fillDemoCredentials('user');
-                        break;
-                    case '3':
-                        fillDemoCredentials('police');
-                        break;
-                }
-            }
-        });
-
-        function fillDemoCredentials(userType) {
-            const emailInput = document.querySelector('input[name="email"]')
-            const passwordInput = document.querySelector('input[name="password"]')
-
-            const credentials = {
-                admin: { email: "admin@findthem.com", password: "admin123" },
-                user: { email: "user@findthem.com", password: "user123" },
-                police: { email: "police@findthem.com", password: "police123" },
-            }
-
-            if (emailInput && passwordInput && credentials[userType]) {
-                emailInput.value = credentials[userType].email
-                passwordInput.value = credentials[userType].password
-
-                emailInput.style.background = "#e8f5e8"
-                passwordInput.style.background = "#e8f5e8"
-
-                setTimeout(() => {
-                    emailInput.style.background = ""
-                    passwordInput.style.background = ""
-                }, 1000)
-            }
-        }
-
-        function handleLogin(event) {
-            event.preventDefault()
-            const formData = new FormData(event.target)
-            const email = formData.get("email")
-            const password = formData.get("password")
-
-            const validUsers = {
-                "admin@findthem.com": { password: "admin123", role: "admin", name: "Admin User" },
-                "user@findthem.com": { password: "user123", role: "user", name: "Brian Kariuki" },
-                "police@findthem.com": { password: "police123", role: "police", name: "Officer Gilbert" },
-            }
-
-            const user = validUsers[email]
-
-            if (!user || user.password !== password) {
-                alert("Invalid email or password. Please try the demo credentials.")
-                return
-            }
-
-            // Store user data in localStorage
-            localStorage.setItem('currentUser', JSON.stringify({
-                id: Date.now(),
-                name: user.name,
-                email: email,
-                role: user.role,
-                avatar: "/placeholder.svg?height=40&width=40",
-            }))
-
-            // Redirect to main dashboard
-            window.location.href = "index.html#dashboard"
-        }
-    </script>
+      showStatus("Login successful! Redirecting...", "success");
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
+    });
+  </script>
 </body>
 </html>
