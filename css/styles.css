@@ -567,3 +567,87 @@ img { max-width: 100%; height: auto; }
   .main-header, .main-nav, .hamburger-menu, .notification-container, .landing-header, .hero-actions, .cta-section, .footer-links { display: none !important; }
   .hero-section { min-height: auto; padding: 2rem 0; }
 }
+/* =========================================
+   MOBILE HEADER & ACTION BUTTON FIXES
+   ========================================= */
+
+@media (max-width: 768px) {
+  
+  /* 1. Fix Header Layout */
+  .main-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* Logo | Search (hidden/moved) | Icons */
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+  }
+
+  /* Force Logo and Icons to stay on the top row */
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    grid-column: 1 / 2; /* Logo on left */
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    grid-column: 3 / 4; /* Icons on right */
+    margin-top: 0; /* Remove previous margin */
+  }
+
+  /* Move Search bar to a second row so it doesn't squish the logo */
+  .search-container {
+    grid-column: 1 / -1; /* Span full width */
+    grid-row: 2; /* Move to second row */
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .search-input {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  /* Make the Logo text smaller on mobile to save space */
+  .logo span {
+    font-size: 1.2rem; 
+  }
+
+  /* 2. Fix Action Buttons (Share, Print, etc.) */
+  .post-actions {
+    display: flex;
+    flex-direction: row; /* Force horizontal */
+    flex-wrap: wrap; /* Allow wrapping to next line */
+    justify-content: space-between;
+    gap: 5px;
+    padding-top: 1rem;
+  }
+
+  .action-btn {
+    flex: 1 1 30%; /* Make buttons take up ~30% width (3 per row) */
+    justify-content: center;
+    padding: 8px 5px;
+    font-size: 0.85rem; /* Smaller text */
+    background: #f8f9fa; /* Light background for better touch target */
+    border-radius: 8px;
+  }
+  
+  .action-btn i {
+    margin-right: 5px;
+    font-size: 1rem;
+  }
+}
+
+/* For very small screens (like the screenshot you showed) */
+@media (max-width: 400px) {
+  .action-btn {
+    flex: 1 1 45%; /* 2 buttons per row on tiny screens */
+  }
+  .logo span {
+    display: none; /* Hide "FindMe" text, keep only icon */
+  }
+}
