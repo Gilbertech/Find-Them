@@ -34,7 +34,7 @@
     .auth-header p { color: #65676b; font-size: 15px; line-height: 1.5; }
     
     .auth-form { margin-bottom: 24px; }
-    .form-group { margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; position: relative; }
     .form-row { display: flex; gap: 16px; }
     .form-row .form-group { flex: 1; }
     
@@ -56,6 +56,23 @@
       outline: none; border-color: #1877f2; background: white; box-shadow: 0 0 0 4px rgba(24,119,242,0.1);
     }
     .form-group input::placeholder { color: #8a8d91; }
+    
+    /* Password Toggle Button */
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 38px;
+      background: none;
+      border: none;
+      color: #65676b;
+      cursor: pointer;
+      padding: 4px;
+      font-size: 18px;
+      transition: color 0.2s;
+    }
+    .password-toggle:hover {
+      color: #1877f2;
+    }
     
     .field-error { color: #c62828; font-size: 13px; margin-top: 6px; display: none; font-weight: 500; }
     
@@ -91,6 +108,9 @@
       .auth-container { padding: 32px 24px; margin: 16px; }
       .auth-header h2 { font-size: 22px; }
       .form-row { flex-direction: column; gap: 0; }
+      .password-toggle {
+        top: 38px;
+      }
     }
   </style>
 </head>
@@ -185,11 +205,17 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Min. 6 characters" minlength="6" required />
+        <button type="button" class="password-toggle" onclick="togglePassword('password', this)">
+          <i class="fas fa-eye"></i>
+        </button>
       </div>
       
       <div class="form-group">
         <label for="confirm-password">Confirm Password</label>
         <input type="password" id="confirm-password" placeholder="Re-enter your password" minlength="6" required />
+        <button type="button" class="password-toggle" onclick="togglePassword('confirm-password', this)">
+          <i class="fas fa-eye"></i>
+        </button>
         <div class="field-error" id="password-error"><i class="fas fa-exclamation-circle"></i> Passwords do not match</div>
       </div>
       
@@ -219,6 +245,22 @@
       statusBox.className = `form-status ${type}`;
     }
 
+    // Toggle password visibility
+    function togglePassword(inputId, button) {
+      const input = document.getElementById(inputId);
+      const icon = button.querySelector('i');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       statusBox.className = "form-status";
@@ -240,30 +282,34 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
 
-      const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { first_name: firstName, last_name: lastName, phone, county }
-        }
-      });
+      try {
+        const { data, error } = await supabaseClient.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { first_name: firstName, last_name: lastName, phone, county }
+          }
+        });
 
-      if (error) {
+        if (error) throw error;
+
+        // Force sign out to prevent auto-login
+        await supabaseClient.auth.signOut();
+
+        showStatus("Account created successfully! Please log in with your credentials.", "success");
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Account Created';
+        submitBtn.disabled = false;
+        
+        // Redirect to login page after 2 seconds
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2000);
+
+      } catch (error) {
         showStatus(error.message, "error");
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
-        return;
       }
-
-      
-
-      showStatus("Account created successfully! Please log in with your new credentials.", "success");
-      submitBtn.innerHTML = '<i class="fas fa-check"></i> Account Created';
-      
-      // Redirect to the login page after a 2-second delay so they can read the success message
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 2000);
     });
   </script>
 </body>
