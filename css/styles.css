@@ -19,8 +19,8 @@
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
   --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --gradient-primary: linear-gradient(135deg, #0a9f46 0%, #764ba2 100%);
-  --gradient-hero: linear-gradient(135deg, rgba(13, 183, 115, 0.54) 0%, rgba(102, 126, 234, 0.9) 100%);
+  --gradient-primary: linear-gradient(135deg, #0d4b26 0%, #148f35 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(13, 183, 115, 0.54) 0%, rgba(14, 140, 106, 0.9) 100%);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
