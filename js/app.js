@@ -61,9 +61,9 @@ function showPage(pageId) {
   document.getElementById(pageId)?.classList.add("active");
 }
 
-
+// ==========================================
 // Landing page
-
+// ==========================================
 async function loadLandingStats() {
   const { data, error } = await supabaseClient.from("site_stats").select("*").single();
   if (error) {
@@ -106,9 +106,9 @@ async function loadTestimonials() {
   `).join("");
 }
 
-
+// ==========================================
 // Dashboard init
-
+// ==========================================
 async function initDashboard() {
   if (!currentProfile) {
     await signOutAndRedirect();
@@ -124,14 +124,21 @@ async function initDashboard() {
   document.getElementById("menu-user-name").textContent = fullName;
   document.getElementById("menu-user-email").textContent = currentProfile.email;
 
-  const roleBadge = currentProfile.role === "admin"
+  let roleBadge = currentProfile.role === "admin"
     ? '<span class="user-role-badge role-admin">ADMIN</span>'
     : '<span class="user-role-badge role-user">USER</span>';
+    
+  if (currentProfile.role === "police") {
+    roleBadge = '<span class="user-role-badge" style="background: #2c3e50; color: white;">POLICE OFFICER</span>';
+  }
 
   document.getElementById("welcome-heading").innerHTML = `Welcome back, ${escapeHtml(currentProfile.first_name || "there")}! ${roleBadge}`;
 
   if (currentProfile.role === "admin") {
-    document.getElementById("admin-nav-item").classList.remove("hidden");
+    document.getElementById("admin-nav-item")?.classList.remove("hidden");
+  }
+  if (currentProfile.role === "police") {
+    document.getElementById("police-nav-item")?.classList.remove("hidden");
   }
 
   populateCountyFilter();
@@ -152,6 +159,7 @@ function showTab(tabId) {
 
   if (tabId === "mine") loadMyPosts();
   if (tabId === "admin") loadAdminData();
+  if (tabId === "police") loadPoliceQueue(); // NEW: Police Queue
   if (tabId === "notifications") loadNotifications();
 }
 
@@ -176,9 +184,9 @@ function populateCountyFilter() {
   });
 }
 
-
+// ==========================================
 // Feed
-
+// ==========================================
 async function loadFeed() {
   const loadingEl = document.getElementById("feed-loading");
   const feedEl = document.getElementById("feed-posts");
@@ -233,17 +241,32 @@ function renderPostCard(post) {
   const reporterName = post.profiles ? `${post.profiles.first_name} ${post.profiles.last_name}`.trim() : "FindMe user";
   const isOwner = currentProfile && post.reporter_id === currentProfile.id;
   const isAdmin = currentProfile && currentProfile.role === "admin";
+  const isPolice = currentProfile && currentProfile.role === "police";
   const canManage = isOwner || isAdmin;
 
-  const statusMeta = {
-    urgent: { label: "URGENT", cls: "urgent" },
-    missing: { label: "MISSING", cls: "urgent" },
-    found_pending: { label: "PENDING REVIEW", cls: "pending" },
-    found: { label: "FOUND", cls: "found" },
-  }[post.status] || { label: post.status.toUpperCase(), cls: "urgent" };
+  // Updated status display to show police verification
+  let statusLabel = post.status.toUpperCase();
+  let statusClass = post.status;
+  
+  if (post.status === 'found_pending') {
+    if (post.police_verified) {
+      statusLabel = '✓ POLICE VERIFIED';
+      statusClass = 'pending-verified';
+    } else {
+      statusLabel = '⏳ AWAITING POLICE';
+      statusClass = 'pending';
+    }
+  }
 
   const resolutionNoteHtml = (post.status === "found_pending" || post.status === "found") && post.resolution_note
     ? `<div class="admin-note-box"><strong>Update from reporter:</strong> ${escapeHtml(post.resolution_note)}</div>`
+    : "";
+
+  const policeVerificationHtml = post.police_verified && post.police_ob_number
+    ? `<div style="background:#e8f5e9; padding:0.75rem; border-radius:6px; margin-top:0.5rem; border-left:3px solid var(--success-green);">
+         <strong style="color:var(--success-green);"><i class="fas fa-shield-alt"></i> Police Verified</strong>
+         <p style="margin:0.25rem 0 0; font-size:0.85rem;">OB Number: <strong>${escapeHtml(post.police_ob_number)}</strong></p>
+       </div>`
     : "";
 
   const reporterAvatar = post.profiles?.avatar_url || placeholderAvatar(reporterName);
@@ -257,7 +280,7 @@ function renderPostCard(post) {
           <h4>${escapeHtml(reporterName)}</h4>
           <span class="post-time">${formatTimeAgo(new Date(post.created_at))} • ${locationLabel}</span>
         </div>
-        <div class="post-status ${statusMeta.cls}">${statusMeta.label}</div>
+        <div class="post-status ${statusClass}">${statusLabel}</div>
       </div>
       <div class="post-content">
         <p>${escapeHtml(post.description)}</p>
@@ -272,6 +295,7 @@ function renderPostCard(post) {
           </div>
         </div>
         ${resolutionNoteHtml}
+        ${policeVerificationHtml}
       </div>
       <div class="post-actions">
         <button class="action-btn" onclick="sharePost('${post.id}')">
@@ -286,7 +310,7 @@ function renderPostCard(post) {
         <button class="action-btn" onclick="printFlyer('${post.id}')">
           <i class="fas fa-print"></i> Print Flyer
         </button>
-        ${canManage ? `
+        ${canManage || isPolice ? `
           <button class="action-btn" onclick="viewTips('${post.id}')">
             <i class="fas fa-list"></i> View Tips
           </button>` : ""}
@@ -314,9 +338,9 @@ function handleSearch() {
   renderFeed();
 }
 
-
+// ==========================================
 // My Reports
-
+// ==========================================
 async function loadMyPosts() {
   const container = document.getElementById("my-posts");
   const emptyEl = document.getElementById("my-posts-empty");
@@ -342,9 +366,9 @@ async function loadMyPosts() {
   container.innerHTML = data.map((p) => renderPostCard(p)).join("");
 }
 
-
+// ==========================================
 // Post creation (WITH M-PESA SIMULATION)
-
+// ==========================================
 function showPostModal() {
   document.getElementById("post-modal").classList.remove("hidden");
 }
@@ -490,8 +514,10 @@ async function executePostSubmission(formData) {
       description: formData.get("description").trim(),
       contact_phone: formData.get("contactPhone").trim(),
       alt_contact: formData.get("altContact")?.trim() || null,
-      status: formData.get("status"),
+      status: formData.get("status"), // Goes live immediately as 'urgent' or 'missing'
       photo_url: photoUrl,
+      police_verified: false,
+      police_ob_number: null
     };
 
     const { error: insertError } = await supabaseClient.from("missing_persons").insert(payload);
@@ -506,9 +532,9 @@ async function executePostSubmission(formData) {
   }
 }
 
-
-// Resolution workflow
-
+// ==========================================
+// Resolution workflow & Police Verification
+// ==========================================
 function showResolveModal(postId) {
   activeResolvePostId = postId;
   document.getElementById("resolve-modal").classList.remove("hidden");
@@ -524,6 +550,7 @@ async function handleResolveSubmit(event) {
   const formData = new FormData(event.target);
   const note = formData.get("resolutionNote").trim();
 
+  // Sets status to found_pending, waiting for police
   const { error } = await supabaseClient
     .from("missing_persons")
     .update({ status: "found_pending", resolution_note: note })
@@ -532,9 +559,94 @@ async function handleResolveSubmit(event) {
   if (error) { showToast(error.message, "error"); return; }
 
   hideResolveModal();
-  showToast("Submitted for review. An admin will verify this shortly.", "success");
+  showToast("Submitted for Police Verification. An officer will confirm shortly.", "success");
   await loadFeed();
   if (document.getElementById("mine-tab").classList.contains("active")) await loadMyPosts();
+}
+
+// NEW: Police Queue Loader
+async function loadPoliceQueue() {
+  const { data, error } = await supabaseClient
+    .from("missing_persons")
+    .select("*, profiles:reporter_id(first_name, last_name, phone)")
+    .eq("status", "found_pending")
+    .eq("police_verified", false)
+    .order("created_at", { ascending: false });
+
+  if (error) return;
+
+  const container = document.getElementById("police-pending-table");
+  if (!container) return;
+  
+  if (!data || data.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:3rem; background:white; border-radius:12px;">
+        <i class="fas fa-check-circle" style="font-size:3rem; color:var(--success-green); margin-bottom:1rem;"></i>
+        <p style="color:var(--text-secondary);">No reports pending police verification.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="background:#e3f2fd; padding:1rem; border-radius:8px; margin-bottom:1.5rem; border-left:4px solid var(--primary-blue);">
+      <strong><i class="fas fa-info-circle"></i> Verification Required:</strong>
+      <p style="margin:0.5rem 0 0; font-size:0.9rem;">Please physically confirm the missing person has been found and enter the official OB (Occurrence Book) Number from your police station.</p>
+    </div>
+  ` + data.map((post) => `
+    <div class="admin-row" style="background:white;">
+      <div class="admin-row-info">
+        <img src="${post.photo_url || placeholderAvatar(post.first_name)}" class="admin-row-photo" onerror="this.src='${placeholderAvatar(post.first_name)}'">
+        <div>
+          <strong style="font-size:1.1rem;">${escapeHtml(post.first_name)} ${escapeHtml(post.last_name)}</strong>
+          <p style="font-size:0.85rem; color:var(--text-secondary);">
+            <i class="fas fa-user"></i> Reported by: ${escapeHtml(post.profiles?.first_name || 'Unknown')} 
+            ${post.profiles?.phone ? `(${escapeHtml(post.profiles.phone)})` : ''}
+          </p>
+          <p style="font-size:0.85rem; color:var(--primary-blue); margin-top:0.25rem;">
+            <i class="fas fa-map-marker-alt"></i> ${escapeHtml(post.last_location)}
+          </p>
+          <div style="background:#f8f9fa; padding:0.75rem; border-radius:6px; margin-top:0.5rem;">
+            <strong style="font-size:0.85rem;">Reason Found:</strong>
+            <p style="margin:0.25rem 0 0; font-size:0.85rem; font-style:italic;">"${escapeHtml(post.resolution_note || 'Not provided')}"</p>
+          </div>
+        </div>
+      </div>
+      <div class="admin-row-actions" style="flex-direction:column; gap:0.5rem; align-items:flex-end;">
+        <input type="text" id="ob-input-${post.id}" placeholder="OB Number" 
+          style="padding:8px; border:2px solid var(--border-gray); border-radius:6px; width:140px; font-weight:600;">
+        <button class="btn-primary" style="padding:10px 16px; width:100%;" onclick="verifyAsPolice('${post.id}')">
+          <i class="fas fa-shield-alt"></i> Verify & Mark Found
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+// NEW: Police Verification Action
+async function verifyAsPolice(postId) {
+  const obNumber = document.getElementById(`ob-input-${postId}`).value.trim();
+  if (!obNumber) {
+    showToast("Please enter the Police OB Number.", "warning");
+    return;
+  }
+
+  // Marks as verified, but keeps status as 'found_pending' for Admin to approve
+  const { error } = await supabaseClient
+    .from("missing_persons")
+    .update({ 
+      police_verified: true, 
+      police_ob_number: obNumber,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", postId);
+
+  if (error) {
+    showToast("Verification failed.", "error");
+  } else {
+    showToast("✅ Verified! Report sent to Admin for final approval.", "success");
+    loadPoliceQueue();
+  }
 }
 
 async function markAsFoundApproved(postId) {
@@ -576,9 +688,9 @@ async function deletePost(postId) {
   if (document.getElementById("admin-tab").classList.contains("active")) await loadAdminData();
 }
 
-
+// ==========================================
 // Share & Print
-
+// ==========================================
 async function sharePost(postId) {
   const post = allPosts.find((p) => p.id === postId);
   if (!post) return;
@@ -624,7 +736,6 @@ async function updateShareCount(postId) {
 function callFamily(number) { if (confirm(`Call ${number}?`)) window.location.href = `tel:${number}`; }
 function callEmergency(number) { if (confirm(`Call ${number}?`)) window.location.href = `tel:${number}`; }
 
-// UPDATED: Dynamic status-aware Print Flyer
 function printFlyer(postId) {
   const post = allPosts.find((p) => p.id === postId) || null;
   if (!post) return;
@@ -632,10 +743,9 @@ function printFlyer(postId) {
   const win = window.open("", "_blank", "width=800,height=1000");
   const photo = post.photo_url || placeholderAvatar(post.first_name);
   
-  // Dynamic status for flyer
   const isFound = post.status === "found" || post.status === "found_pending";
   const statusText = isFound ? "FOUND" : "MISSING";
-  const statusColor = isFound ? "#42b883" : "#e74c3c"; // Green for found, red for missing
+  const statusColor = isFound ? "#42b883" : "#e74c3c";
   const headline = isFound ? "FOUND SAFE" : "MISSING";
 
   win.document.write(`
@@ -666,6 +776,7 @@ function printFlyer(postId) {
         <p><strong>Date/Time:</strong> ${new Date(post.last_seen_at).toLocaleString()}</p>
         <p><strong>Description:</strong> ${escapeHtml(post.description)}</p>
         ${isFound && post.resolution_note ? `<p><strong>Resolution:</strong> ${escapeHtml(post.resolution_note)}</p>` : ""}
+        ${post.police_verified && post.police_ob_number ? `<p><strong>Police Verified:</strong> OB #${escapeHtml(post.police_ob_number)}</p>` : ""}
       </div>
       <div class="contact">If you have any information, please call ${escapeHtml(post.contact_phone)}</div>
       <div class="footer">Reported via FindMe · Please contact the police if this is urgent (999 / 911)</div>
@@ -676,9 +787,9 @@ function printFlyer(postId) {
   win.document.close();
 }
 
-
+// ==========================================
 // Tips & Notifications
-
+// ==========================================
 function showTipModal(postId) {
   activeTipPostId = postId;
   document.getElementById("tip-modal").classList.remove("hidden");
@@ -797,9 +908,9 @@ async function markAllNotificationsRead() {
   await refreshNotificationBadge();
 }
 
-
+// ==========================================
 // Profile Settings
-
+// ==========================================
 function showProfileSettings() {
   toggleHamburgerMenu();
   const avatarUrl = currentProfile.avatar_url || placeholderAvatar(`${currentProfile.first_name} ${currentProfile.last_name}`);
@@ -910,9 +1021,9 @@ async function saveProfileSettings(event) {
   initDashboard();
 }
 
-
-// Static Info Pages (Fully Comprehensive)
-
+// ==========================================
+// Static Info Pages
+// ==========================================
 function showAbout() {
   const html = `
  <div class="about-container" style="padding: 2rem;">
@@ -1040,7 +1151,7 @@ function showHelpSupport() {
         </div>
         <div class="faq-item" style="margin-bottom: 1.5rem; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: var(--shadow);">
           <h5 style="color: var(--text-primary); margin-bottom: 0.75rem; font-size: 1.1rem;"><i class="fas fa-check-circle" style="color: var(--success-green); margin-right: 0.5rem;"></i> How do I mark someone as found?</h5>
-          <p style="color: var(--text-secondary); line-height: 1.7; margin-left: 1.75rem;">Go to "My Reports", select the case, and click "Mark as Found". Provide details about how they were found. An admin will verify this before updating the status publicly.</p>
+          <p style="color: var(--text-secondary); line-height: 1.7; margin-left: 1.75rem;">Go to "My Reports", select the case, and click "Mark as Found". Provide details about how they were found. A Police Officer will verify this physically before the Admin updates the status publicly.</p>
         </div>
         <div class="faq-item" style="margin-bottom: 1.5rem; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: var(--shadow);">
           <h5 style="color: var(--text-primary); margin-bottom: 0.75rem; font-size: 1.1rem;"><i class="fas fa-comment-dots" style="color: var(--warning-orange); margin-right: 0.5rem;"></i> How can I provide a tip?</h5>
@@ -1163,8 +1274,9 @@ function showPrivacy() {
   showSettingsModal("Privacy Policy", html);
 }
 
-
+// ==========================================
 // Admin dashboard
+// ==========================================
 async function loadAdminData() {
   if (!currentProfile || currentProfile.role !== "admin") return;
   await Promise.all([loadAdminPending(), loadAdminReports(), loadAdminUsers(), loadAdminTestimonials(), loadAdminAuditLog(), loadAdminAnalytics()]);
@@ -1217,22 +1329,31 @@ async function loadAdminPending() {
 
   if (error) return;
   document.getElementById("admin-pending-count").textContent = data.length;
-  document.getElementById("admin-pending-table").innerHTML = data.map((r) => `
+  
+  document.getElementById("admin-pending-table").innerHTML = data.map((r) => {
+    const policeBadge = r.police_verified 
+      ? `<span style="background:var(--success-green); color:white; padding:4px 8px; border-radius:12px; font-size:0.75rem; font-weight:700; margin-left:5px;"><i class="fas fa-shield-alt"></i> POLICE VERIFIED (OB: ${escapeHtml(r.police_ob_number || 'N/A')})</span>`
+      : `<span style="background:var(--warning-orange); color:white; padding:4px 8px; border-radius:12px; font-size:0.75rem; font-weight:700; margin-left:5px;"><i class="fas fa-clock"></i> AWAITING POLICE</span>`;
+
+    return `
     <div class="admin-row">
       <div class="admin-row-info">
         <img class="admin-row-photo" src="${r.photo_url || placeholderAvatar(r.first_name)}" alt="" onerror="this.src='${placeholderAvatar(r.first_name)}'">
         <div>
-          <p><strong>${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</strong> — reported by ${escapeHtml(r.profiles ? r.profiles.first_name + " " + r.profiles.last_name : "unknown")}</p>
+          <p><strong>${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</strong> ${policeBadge}</p>
+          <p style="font-size:0.85rem; color:var(--text-secondary);">Reported by: ${escapeHtml(r.profiles ? r.profiles.first_name + " " + r.profiles.last_name : "unknown")}</p>
           <span class="notification-time">${escapeHtml(r.last_location)} • ${formatTimeAgo(new Date(r.updated_at))}</span>
-          ${r.resolution_note ? `<div class="admin-note-box">${escapeHtml(r.resolution_note)}</div>` : ""}
+          ${r.resolution_note ? `<div class="admin-note-box"><strong>Reporter says:</strong> ${escapeHtml(r.resolution_note)}</div>` : ""}
         </div>
       </div>
       <div class="admin-row-actions">
-        <button class="btn-primary" onclick="markAsFoundApproved('${r.id}')">Approve</button>
+        <button class="btn-primary" onclick="markAsFoundApproved('${r.id}')" ${!r.police_verified ? 'disabled style="opacity:0.5; cursor:not-allowed;" title="Police must verify first"' : ''}>
+          ${r.police_verified ? 'Approve & Mark Found' : 'Waiting for Police'}
+        </button>
         <button class="btn-secondary" onclick="rejectResolution('${r.id}', '${r.previous_status || "missing"}')">Reject</button>
       </div>
     </div>
-  `).join("") || "<p style='color:var(--text-secondary); padding: 1rem;'>Nothing waiting for review.</p>";
+  `}).join("") || "<p style='color:var(--text-secondary); padding: 1rem;'>Nothing waiting for review.</p>";
 }
 
 async function loadAdminReports() {
@@ -1250,6 +1371,7 @@ async function loadAdminReports() {
         <div>
           <p><strong>${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</strong> — ${escapeHtml(r.status)} reported by ${escapeHtml(r.profiles ? r.profiles.first_name + " " + r.profiles.last_name : "unknown")}</p>
           <span class="notification-time">${formatTimeAgo(new Date(r.created_at))} • ${escapeHtml(r.last_location)}</span>
+          ${r.police_verified && r.police_ob_number ? `<p style="margin-top:0.25rem; font-size:0.85rem; color:var(--success-green);"><i class="fas fa-file-alt"></i> OB: ${escapeHtml(r.police_ob_number)}</p>` : ''}
         </div>
       </div>
       <div class="admin-row-actions">
@@ -1472,9 +1594,9 @@ async function loadAdminAuditLog() {
   `).join("") || "<p style='color:var(--text-secondary); padding: 1rem;'>No admin actions logged yet.</p>";
 }
 
-
+// ==========================================
 // Utilities
-
+// ==========================================
 function showSettingsModal(title, contentHtml) {
   document.getElementById("settings-title").textContent = title;
   document.getElementById("settings-content").innerHTML = contentHtml;

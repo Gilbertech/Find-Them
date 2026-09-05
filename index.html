@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-        <div id="landing-page" class="page">
+    <div id="landing-page" class="page">
         <div class="hero-container">
             <div class="hero-background">
                 <div class="mesh-gradient"></div>
@@ -148,7 +148,7 @@
                             <i class="fas fa-shield-alt"></i>
                         </div>
                         <h3>4. Verified Resolution</h3>
-                        <p>Admins review and approve every "found" update to maintain platform trust and safety.</p>
+                        <p>Police officers physically verify "found" reports before Admins give final approval.</p>
                     </div>
                 </div>
             </div>
@@ -252,6 +252,10 @@
             <button class="nav-item" data-tab="notifications" onclick="showTab('notifications')">
                 <i class="fas fa-bell"></i><span>Notifications</span>
             </button>
+            <!-- NEW: Police Tab (Hidden by default, shown via JS if role is 'police') -->
+            <button class="nav-item hidden" id="police-nav-item" data-tab="police" onclick="showTab('police')">
+                <i class="fas fa-user-shield"></i><span>Police</span>
+            </button>
             <button class="nav-item hidden" id="admin-nav-item" data-tab="admin" onclick="showTab('admin')">
                 <i class="fas fa-shield-alt"></i><span>Admin</span>
             </button>
@@ -351,6 +355,18 @@
                 <p id="notifications-empty" class="hidden" style="text-align:center;color:var(--text-secondary);padding:2rem;">
                     No notifications yet.
                 </p>
+            </div>
+
+            <!-- NEW: Police Verification Tab Content -->
+            <div id="police-tab" class="tab-content">
+                <div class="groups-header">
+                    <h2><i class="fas fa-user-shield" style="margin-right: 0.5rem;"></i> Police Verification Queue</h2>
+                </div>
+                <p style="color:var(--text-secondary); margin-bottom: 1.5rem; background: #e3f2fd; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary-blue);">
+                    <strong><i class="fas fa-info-circle"></i> Verification Required:</strong><br>
+                    Reports submitted by the community that require physical verification. Please confirm the person is safe and enter the official OB (Occurrence Book) Number from your police station.
+                </p>
+                <div id="police-pending-table"></div>
             </div>
 
             <div id="admin-tab" class="tab-content">
@@ -557,17 +573,16 @@
             <form class="post-form" id="resolve-form">
                 <div class="form-section">
                     <p style="color:var(--text-secondary);margin-bottom:1rem;">
-                        This sends the report for admin review before it's shown publicly as "Found" — this keeps
-                        the platform trustworthy for everyone.
+                        This sends the report for police verification before it's shown publicly as "Found" — this keeps the platform trustworthy for everyone.
                     </p>
                     <div class="form-group">
-                        <label>How / where were they found? (shown to the reviewing admin)</label>
+                        <label>How / where were they found?</label>
                         <textarea name="resolutionNote" placeholder="e.g. Found safe at a relative's home in Kikuyu, reunited with family on..." required></textarea>
                     </div>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="hideResolveModal()">Cancel</button>
-                    <button type="submit" class="btn-primary">Submit for Review</button>
+                    <button type="submit" class="btn-primary">Submit for Police Verification</button>
                 </div>
             </form>
         </div>
@@ -619,7 +634,6 @@
 
     <div id="notification-container" class="notification-container"></div>
 
-   
     <script src="js/env.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
